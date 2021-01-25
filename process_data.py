@@ -81,6 +81,14 @@ def vaccine_date_count():
         .sort_values(['vaccine_date'], ascending=True)
 
 
+def uncategorized_service_group_by_area_count():
+    return df.loc[df['service_group'] == 'Outros', ['area', 'id']] \
+        .groupby('area') \
+        .count() \
+        .rename(columns={'id': 'count'}) \
+        .sort_values(['count'], ascending=False)
+
+
 def uncategorized_service_group_by_vaccination_site_count():
     return df.loc[df['service_group'] == 'Outros', ['vaccination_site', 'id']]\
         .groupby('vaccination_site')\
@@ -115,6 +123,7 @@ dfs_to_extract = [
     service_group_count,
     priority_group_count,
     vaccine_date_count,
+    uncategorized_service_group_by_area_count,
     uncategorized_service_group_by_vaccination_site_full_data,
     uncategorized_service_group_by_vaccination_site_percent
 ]

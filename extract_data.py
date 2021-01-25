@@ -2,12 +2,14 @@
 
 import json
 import pdfplumber
+from validate_docbr import CPF
  
 input = "raw_db/007_Vacinados_2021_01_23_17_17_00.pdf"
 output = "db/007_Vacinados_2021_01_23_17_17_00.json"
 
 pdf = pdfplumber.open(input)
 output_file = open(output, 'w')
+cpf_validator = CPF()
 
 header = [
     'full_name',
@@ -29,6 +31,7 @@ def extra_attribs(dictio_):
             'area': dictio['vaccination_site'].split('-', 1)[0].strip(),
             'vaccination_site': dictio['vaccination_site'].split('-', 1)[1].strip(),
             'cpf': dictio['cpf'].replace('\'', ''),
+            'valid_cpf': cpf_validator.validate(dictio['cpf'].replace('\'', ''))
         }
     )
 

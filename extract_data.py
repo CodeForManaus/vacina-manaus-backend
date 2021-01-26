@@ -4,11 +4,14 @@ import json
 import pdfplumber
 from validate_docbr import CPF
  
-input = "raw_db/007_Vacinados_2021_01_23_17_17_00.pdf"
-output = "db/007_Vacinados_2021_01_23_17_17_00.json"
+input_paths = [
+    "raw_db/007_Vacinados_2021_01_23_17_17_00.pdf",
+    "raw_db/009_Vacinados_2021_01_25_21_00_00-1.pdf",
+]
 
-pdf = pdfplumber.open(input)
-output_file = open(output, 'w')
+output_path = "db/db.json"
+
+output_file = open(output_path, 'w')
 cpf_validator = CPF()
 
 header = [
@@ -53,23 +56,28 @@ def get_dict(header_, record_):
 
 i = 1
 
-for page in range(len(pdf.pages)):
-    table = pdf.pages[page].extract_table()
+print()
 
-    if page == 0:
-        if not header:
-            header = remove_line_breaks(table.pop(0))
-        else:
-            table.pop(0)
+for input_path in input_paths:
+    pdf = pdfplumber.open(input_path)
 
-    for record in table:
-        dictio = get_dict(header, remove_line_breaks(record))
-        extra_attribs(dictio)
+    for page in range(len(pdf.pages)):
+        table = pdf.pages[page].extract_table()
 
-        dictio['id'] = i
+        if page == 0:
+            if not header:
+                header = remove_line_breaks(table.pop(0))
+            else:
+                table.pop(0)
 
-        data.append(dictio)
+        for record in table:
+            dictio = get_dict(header, remove_line_breaks(record))
+            extra_attribs(dictio)
 
-        i += 1
+            dictio['id'] = i
+
+            data.append(dictio)
+
+            i += 1
 
 json.dump(data, output_file)

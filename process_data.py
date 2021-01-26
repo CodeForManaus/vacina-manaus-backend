@@ -4,7 +4,7 @@ import pandas as pd
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 
-input = "db/007_Vacinados_2021_01_23_17_17_00.json"
+input = "db/db.json"
 output_path = 'analytics'
 
 df = pd.read_json(input)

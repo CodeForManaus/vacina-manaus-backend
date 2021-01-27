@@ -89,6 +89,23 @@ def uncategorized_service_group_by_area_count():
         .sort_values(['count'], ascending=False)
 
 
+def uncategorized_service_group_by_area_full_data():
+    df_ = uncategorized_service_group_by_area_count()\
+        .rename(columns={'count': 'uncategorized_count'})\
+        .join(area_count().rename(columns={'count': 'total_count'}))
+
+    df_['categorized_count'] = df_['total_count'] - df_['uncategorized_count']
+    df_['uncategorized_percent'] = df_['uncategorized_count']/df_['total_count']*100
+    df_['categorized_percent'] = df_['categorized_count']/df_['total_count']*100
+
+    return df_
+
+
+def uncategorized_service_group_by_area_percent():
+    return uncategorized_service_group_by_area_full_data()[['uncategorized_percent']]\
+        .sort_values(['uncategorized_percent'], ascending=False)
+
+
 def uncategorized_service_group_by_vaccination_site_count():
     return df.loc[df['service_group'] == 'Outros', ['vaccination_site', 'id']]\
         .groupby('vaccination_site')\
@@ -124,6 +141,7 @@ dfs_to_extract = [
     priority_group_count,
     vaccine_date_count,
     uncategorized_service_group_by_area_count,
+    uncategorized_service_group_by_area_percent,
     uncategorized_service_group_by_vaccination_site_full_data,
     uncategorized_service_group_by_vaccination_site_percent
 ]

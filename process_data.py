@@ -3,6 +3,7 @@
 import pandas as pd
 
 MANAUS_ESTIMATED_POPULATION = 2219580
+VACCINE_TARGET = 70  # %
 
 input = "db/012_Vacinados_2021_01_27_20_00_00.json"
 output_path = 'analytics'
@@ -15,7 +16,7 @@ df = pd.read_json(input)
 def vaccination_count():
     df_ = pd.DataFrame(data={
         'vaccinated': [len(df)],
-        'estimated_non_vaccinated': [MANAUS_ESTIMATED_POPULATION-len(df)]
+        'estimated_non_vaccinated': [int(MANAUS_ESTIMATED_POPULATION*VACCINE_TARGET/100-len(df))]
     })
 
     return df_
@@ -24,7 +25,7 @@ def vaccination_count():
 def vaccination_count_statistics():
     df_ = pd.DataFrame(data={
         'vaccinated': [len(df)],
-        'estimated_non_vaccinated': [MANAUS_ESTIMATED_POPULATION-len(df)],
+        'estimated_non_vaccinated': [int(MANAUS_ESTIMATED_POPULATION*VACCINE_TARGET/100-len(df))],
         'estimated_population': [MANAUS_ESTIMATED_POPULATION],
     })
 

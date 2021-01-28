@@ -1,0 +1,11 @@
+---
+version: '3.6'
+services:
+  vacina-manaus-backend:
+    build:
+      context: .
+    image: vacina-manaus-backend:development
+    container_name: vacina-manaus-backend
+    restart: unless-stopped
+    volumes:
+      - .:/app

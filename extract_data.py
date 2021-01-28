@@ -5,10 +5,10 @@ import pdfplumber
 from validate_docbr import CPF
  
 input_paths = [
-    "raw_db/011_Vacinados_2021_01_26_20_00_00.pdf",
+    "raw_db/012_Vacinados_2021_01_27_20_00_00.pdf",
 ]
 
-output_path = "db/011_Vacinados_2021_01_26_20_00_00.json"
+output_path = "db/012_Vacinados_2021_01_27_20_00_00.json"
 
 output_file = open(output_path, 'w')
 cpf_validator = CPF()

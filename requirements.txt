@@ -11,3 +11,5 @@ six==1.15.0
 sortedcontainers==2.3.0
 validate-docbr==1.8.2
 Wand==0.6.5
+requests
+BeautifulSoup4

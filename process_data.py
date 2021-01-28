@@ -12,6 +12,15 @@ df = pd.read_json(input)
 # DataFrame definitions
 
 
+def vaccination_count():
+    df_ = pd.DataFrame(data={
+        'vaccinated': [len(df)],
+        'estimated_non_vaccinated': [MANAUS_ESTIMATED_POPULATION-len(df)]
+    })
+
+    return df_
+
+
 def vaccination_count_statistics():
     df_ = pd.DataFrame(data={
         'vaccinated': [len(df)],
@@ -132,6 +141,7 @@ def uncategorized_service_group_by_vaccination_site_percent():
 
 
 dfs_to_extract = [
+    vaccination_count,
     vaccination_count_statistics,
     vaccination_site_count,
     area_count,

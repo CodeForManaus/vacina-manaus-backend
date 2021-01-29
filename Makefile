@@ -18,8 +18,8 @@ data: extract-data process-data
 
 .PHONY: extract-data
 extract-data:
-	@docker-compose run --rm ${SERVICE_NAME} python extract_data.py
+	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python extract_data.py
 
 .PHONY: process-data
 process-data:
-	@docker-compose run --rm ${SERVICE_NAME} python process_data.py
+	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python process_data.py

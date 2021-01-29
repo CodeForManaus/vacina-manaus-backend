@@ -91,6 +91,55 @@ def vaccine_date_count():
         .sort_values(['vaccine_date'], ascending=True)
 
 
+def vaccine_by_service_group_and_vaccine_date_count():
+    df_ = df[['id', 'service_group', 'vaccine_date']] \
+        .groupby(['service_group', 'vaccine_date'], as_index=False) \
+        .count() \
+        .rename(columns={'id': 'count'})
+
+    df_ = pd.merge(
+        df_,
+        pd.merge(
+            df_[['service_group', 'count']]
+            .groupby('service_group', as_index=False)
+            .count()
+            .assign(count=0)
+            .set_index('count'),
+
+            df_[['vaccine_date', 'count']]
+            .groupby('vaccine_date', as_index=False)
+            .count()
+            .assign(count=0)
+            .set_index('count'),
+
+            how='cross'
+        ).assign(count=0),
+        how='outer',
+        on=['service_group', 'vaccine_date']
+    ).fillna(0)
+
+    df_['count'] = (df_['count_x'] + df_['count_y']).astype(int)
+
+    return df_[['service_group', 'vaccine_date', 'count']] \
+        .sort_values(['service_group', 'vaccine_date'])
+
+
+def vaccine_by_service_group_and_vaccine_date_evolution():
+    df_ = pd.merge(
+        vaccine_by_service_group_and_vaccine_date_count()[['service_group', 'vaccine_date']],
+        vaccine_by_service_group_and_vaccine_date_count()[['service_group', 'vaccine_date', 'count']]
+        .rename(columns={'vaccine_date': 'vaccine_date2'}),
+        how='inner',
+        on=['service_group']
+    )
+
+    df_ = df_.loc[df_['vaccine_date'] >= df_['vaccine_date2']] \
+        .groupby(['service_group', 'vaccine_date'], as_index=False) \
+        .sum('count')
+
+    return df_
+
+
 def uncategorized_service_group_by_area_count():
     return df.loc[df['service_group'] == 'Outros', ['area', 'id']] \
         .groupby('area') \
@@ -150,6 +199,8 @@ dfs_to_extract = [
     full_name_count,
     service_group_count,
     priority_group_count,
+    vaccine_by_service_group_and_vaccine_date_count,
+    vaccine_by_service_group_and_vaccine_date_evolution,
     vaccine_date_count,
     uncategorized_service_group_by_area_count,
     uncategorized_service_group_by_area_percent,

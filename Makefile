@@ -14,7 +14,11 @@ build-no-cache:
 	@docker-compose build --no-cache
 
 .PHONY: data
-data: extract-data process-data
+data: download-data extract-data process-data
+
+.PHONY: download-data
+download-data:
+	@docker-compose run --rm ${SERVICE_NAME} python download_data.py
 
 .PHONY: extract-data
 extract-data:

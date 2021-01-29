@@ -1,14 +1,21 @@
 # coding: utf-8
+import os
 
 import json
 import pdfplumber
 from validate_docbr import CPF
- 
-input_paths = [
-    "raw_db/013_Vacinados_2021_01_28_19_00_00.pdf",
-]
 
-output_path = "db/013_Vacinados_2021_01_28_19_00_00.json"
+paths = os.listdir('raw_db')
+
+# Add absolute path to get information about tha last modification to max method
+_paths = list(map(lambda x: 'raw_db/{}'.format(x), paths))
+
+filename = max(_paths, key=os.path.getctime).replace(
+    'raw_db/', '').replace('.pdf', '')
+
+input_path = "raw_db/{}.pdf".format(filename)
+
+output_path = "db/{}.json".format(filename)
 
 output_file = open(output_path, 'w')
 cpf_validator = CPF()
@@ -55,28 +62,25 @@ def get_dict(header_, record_):
 
 i = 1
 
-print()
+pdf = pdfplumber.open(input_path)
 
-for input_path in input_paths:
-    pdf = pdfplumber.open(input_path)
+for page in range(len(pdf.pages)):
+    table = pdf.pages[page].extract_table()
 
-    for page in range(len(pdf.pages)):
-        table = pdf.pages[page].extract_table()
+    if page == 0:
+        if not header:
+            header = remove_line_breaks(table.pop(0))
+        else:
+            table.pop(0)
 
-        if page == 0:
-            if not header:
-                header = remove_line_breaks(table.pop(0))
-            else:
-                table.pop(0)
+    for record in table:
+        dictio = get_dict(header, remove_line_breaks(record))
+        extra_attribs(dictio)
 
-        for record in table:
-            dictio = get_dict(header, remove_line_breaks(record))
-            extra_attribs(dictio)
+        dictio['id'] = i
 
-            dictio['id'] = i
+        data.append(dictio)
 
-            data.append(dictio)
-
-            i += 1
+        i += 1
 
 json.dump(data, output_file)

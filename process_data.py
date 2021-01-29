@@ -91,7 +91,7 @@ def vaccine_date_count():
         .sort_values(['vaccine_date'], ascending=True)
 
 
-def vaccine_by_service_group_and_vaccine_date_count():
+def vaccine_by_service_group_and_vaccine_date_count(pivot=True):
     df_ = df[['id', 'service_group', 'vaccine_date']] \
         .groupby(['service_group', 'vaccine_date'], as_index=False) \
         .count() \
@@ -120,22 +120,32 @@ def vaccine_by_service_group_and_vaccine_date_count():
 
     df_['count'] = (df_['count_x'] + df_['count_y']).astype(int)
 
-    return df_[['service_group', 'vaccine_date', 'count']] \
-        .sort_values(['service_group', 'vaccine_date'])
+    df_ = df_[['service_group', 'vaccine_date', 'count']] \
+        .sort_values(['service_group', 'vaccine_date'])\
+        .reset_index()
+
+    if pivot:
+        df_ = df_.pivot_table('count', ['vaccine_date'], 'service_group')
+
+    return df_
 
 
-def vaccine_by_service_group_and_vaccine_date_evolution():
+def vaccine_by_service_group_and_vaccine_date_evolution(pivot=True):
     df_ = pd.merge(
-        vaccine_by_service_group_and_vaccine_date_count()[['service_group', 'vaccine_date']],
-        vaccine_by_service_group_and_vaccine_date_count()[['service_group', 'vaccine_date', 'count']]
-        .rename(columns={'vaccine_date': 'vaccine_date2'}),
+        vaccine_by_service_group_and_vaccine_date_count(pivot=False)[['service_group', 'vaccine_date']],
+        vaccine_by_service_group_and_vaccine_date_count(pivot=False)[['service_group', 'vaccine_date', 'count']]
+            .rename(columns={'vaccine_date': 'vaccine_date2'}),
         how='inner',
         on=['service_group']
     )
 
     df_ = df_.loc[df_['vaccine_date'] >= df_['vaccine_date2']] \
         .groupby(['service_group', 'vaccine_date'], as_index=False) \
-        .sum('count')
+        .sum('count') \
+        .reset_index()
+
+    if pivot:
+        df_ = df_.pivot_table('count', ['vaccine_date'], 'service_group')
 
     return df_
 
@@ -189,6 +199,8 @@ def uncategorized_service_group_by_vaccination_site_percent():
     return uncategorized_service_group_by_vaccination_site_full_data()[['uncategorized_percent']]\
         .sort_values(['uncategorized_percent'], ascending=False)
 
+
+import pdb; pdb.set_trace()
 
 dfs_to_extract = [
     vaccination_count,

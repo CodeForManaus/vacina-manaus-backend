@@ -10,22 +10,22 @@ from validate_docbr import CPF
 
 from progress_download import ProgressDownload
 
-paths = os.listdir('raw_db')
+paths = os.listdir('data/raw')
 
 # Add absolute path to get information about tha last modification to max method
-_paths = list(map(lambda x: 'raw_db/{}'.format(x), paths))
+_paths = list(map(lambda x: 'data/raw/{}'.format(x), paths))
 
 filename = max(_paths, key=os.path.getctime).replace(
-    'raw_db/', '').replace('.pdf', '')
+    'data/raw/', '').replace('.pdf', '')
 
-input_path = "raw_db/{}.pdf".format(filename)
+input_path = "data/raw/{}.pdf".format(filename)
 
 
 def get_latest_filename():
-    paths = os.listdir('raw_db')
+    paths = os.listdir('data/raw')
 
     # Add absolute path to get information about tha last modification to max method
-    _paths = list(map(lambda x: 'raw_db/{}'.format(x), paths))
+    _paths = list(map(lambda x: 'data/raw/{}'.format(x), paths))
 
     return max(_paths, key=os.path.getctime)
 
@@ -234,5 +234,5 @@ if __name__ == "__main__":
     else:
         fileName = get_latest_filename()
 
-    pdfExtractor = PdfExtractor(fileName, fileName.replace("raw_db", "db").replace("pdf", "json"))
+    pdfExtractor = PdfExtractor(fileName, fileName.replace("data/raw", "data/cleaned").replace("pdf", "json"))
     pdfExtractor.process()

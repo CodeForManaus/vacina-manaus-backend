@@ -13,9 +13,9 @@ VACCINE_TARGET_ESTIMATED_POPULATION = MANAUS_ESTIMATED_POPULATION*VACCINE_TARGET
 
 
 def get_latest_filename():
-    paths = os.listdir('db')
+    paths = os.listdir('data/cleaned')
     # Add absolute path to get information about tha last modification to max method
-    _paths = list(map(lambda x: 'db/{}'.format(x), paths))
+    _paths = list(map(lambda x: 'data/cleaned/{}'.format(x), paths))
     return max(_paths, key=os.path.getctime)
 
 
@@ -392,5 +392,5 @@ if __name__ == "__main__":
         fileName = sys.argv[1]
     else:
         fileName = get_latest_filename()
-    dataProcessor = DataProcessor(fileName, 'analytics')
+    dataProcessor = DataProcessor(fileName, 'data/analyzed')
     dataProcessor.process_all()

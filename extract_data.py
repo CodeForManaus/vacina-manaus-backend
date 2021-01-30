@@ -1,5 +1,7 @@
 # coding: utf-8
 import os
+import sys
+
 
 import json
 import pdfplumber
@@ -17,82 +19,99 @@ filename = max(_paths, key=os.path.getctime).replace(
 
 input_path = "raw_db/{}.pdf".format(filename)
 
-output_path = "db/{}.json".format(filename)
+def getNewestFilename():
+    paths = os.listdir('raw_db')
 
-output_file = open(output_path, 'w')
-cpf_validator = CPF()
+    # Add absolute path to get information about tha last modification to max method
+    _paths = list(map(lambda x: 'raw_db/{}'.format(x), paths))
 
-header = [
-    'full_name',
-    'cpf',
-    'vaccine_date',
-    'vaccination_site',
-    'priority_group',
-    'service_group',
-    'workplace',
-    'role'
-]
+    return max(_paths, key=os.path.getctime)
 
-data = []
+class PdfExtractor:
 
+    def __init__(self, input_path, output_path):
+        self.input_path = input_path
+        self.output_path = output_path
+        self.header = [
+                        'full_name',
+                        'cpf',
+                        'vaccine_date',
+                        'vaccination_site',
+                        'priority_group',
+                        'service_group',
+                        'workplace',
+                        'role'
+                    ]
 
-def formatCPF(cpf):
-    if len(cpf) < 11:
-        cpf = cpf.zfill(11)
-    return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
+    def __formatCPF(self, cpf):
+        if len(cpf) < 11:
+            cpf = cpf.zfill(11)
+        return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
 
-def extra_attribs(dictio_):
-    dictio_.update(
-        {
-            'area': dictio['vaccination_site'].split('-', 1)[0].strip(),
-            'vaccination_site': dictio['vaccination_site'].split('-', 1)[1].strip(),
-            'cpf': formatCPF(dictio['cpf'].replace('\'', '')),
-            'valid_cpf': cpf_validator.validate(dictio['cpf'].replace('\'', ''))
-        }
-    )
+    def __extra_attribs(self, dictio_):
+        cpf_validator = CPF()
+        dictio_.update(
+            {
+                'area': dictio_['vaccination_site'].split('-', 1)[0].strip(),
+                'vaccination_site': dictio_['vaccination_site'].split('-', 1)[1].strip(),
+                'cpf': self.__formatCPF(dictio_['cpf'].replace('\'', '')),
+                'valid_cpf': cpf_validator.validate(dictio_['cpf'].replace('\'', ''))
+            }
+        )
 
-    return dictio_
-
-
-def remove_line_breaks(arr):
-    return list(map(lambda v: v.replace('\n', ''), arr))
-
-
-def get_dict(header_, record_):
-    if len(header_) != len(record_):
-        # TODO: Specify exception
-
-        raise Exception
-
-    return {header_[i]: record_[i] for i in range(len(header_))}
+        return dictio_
 
 
-i = 1
+    def __remove_line_breaks(self,arr):
+        return list(map(lambda v: v.replace('\n', ''), arr))
 
-pdf = pdfplumber.open(input_path)
 
-count = 1
-sizePages = len(pdf.pages)
-progressDownload = ProgressDownload()
-for page in range(len(pdf.pages)):
-    table = pdf.pages[page].extract_table()
+    def __get_dict(self,header_, record_):
+        if len(header_) != len(record_):
+            # TODO: Specify exception
 
-    if page == 0:
-        if not header:
-            header = remove_line_breaks(table.pop(0))
-        else:
-            table.pop(0)
+            raise Exception
 
-    for record in table:
-        dictio = get_dict(header, remove_line_breaks(record))
-        extra_attribs(dictio)
+        return {header_[i]: record_[i] for i in range(len(header_))}
 
-        dictio['id'] = i
+    def process(self):
+        i = 1
+        data = []
+        header = self.header
+        output_file = open(self.output_path, 'w')
+        pdf = pdfplumber.open(self.input_path)
+        
+        count = 1
+        sizePages = len(pdf.pages)
+        progressDownload = ProgressDownload()
+        for page in range(len(pdf.pages)):
+            table = pdf.pages[page].extract_table()
 
-        data.append(dictio)
+            if page == 0:
+                if not header:
+                    header = self.__remove_line_breaks(table.pop(0))
+                else:
+                    table.pop(0)
 
-        i += 1
-    progressDownload(count,1,sizePages)
-    count +=1
+            for record in table:
+                dictio = self.__get_dict(header, self.__remove_line_breaks(record))
+                self.__extra_attribs(dictio)
 
-json.dump(data, output_file)
+                dictio['id'] = i
+
+                data.append(dictio)
+
+                i += 1
+            progressDownload(count,1,sizePages)
+            count +=1
+
+        json.dump(data, output_file)
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        fileName = sys.argv[1]
+    else:
+        fileName = getNewestFilename()
+
+    pdfExtractor = PdfExtractor(fileName, fileName.replace("raw_db","db").replace("pdf", "json"))
+    pdfExtractor.process()

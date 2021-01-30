@@ -2,7 +2,7 @@
 
 SERVICE_NAME=vacina-manaus-backend
 
-PHONY: all
+.PHONY: all
 all: build data
 
 .PHONY: build

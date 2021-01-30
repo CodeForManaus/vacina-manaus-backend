@@ -117,6 +117,75 @@ def vaccine_date_count(format_datetime=True):
     return df_
 
 
+def vaccine_date_count_by_interval(
+    format_datetime=True,
+    days_from_now=3,
+    from_day=None,
+    to_day=None
+):
+
+    from_day, to_day, interval = __calculate_interval(
+        days_from_now,
+        from_day,
+        to_day
+    )
+
+    df_ = pd.merge(
+        vaccine_date_count(format_datetime=False).reset_index(),
+        vaccine_date_count(format_datetime=False).reset_index(),
+        how='cross'
+    )
+
+    df_['diff_days'] = (df_['vaccine_date_y'] - df_['vaccine_date_x']).dt.days
+
+    df_ = df_.loc[(df_['diff_days'] >= from_day) & (df_['diff_days'] <= to_day)][['vaccine_date_x', 'count_y']] \
+        .rename(columns={'vaccine_date_x': 'vaccine_date', 'count_y': 'count'})
+
+    df_ = pd.merge(
+        df_,
+        df_.groupby('vaccine_date').count().reset_index(),
+        how='inner',
+        on='vaccine_date'
+    ).rename(columns={'count_x': 'count', 'count_y': 'interval'})
+
+    df_ = df_.loc[df_['interval'] == interval][['vaccine_date', 'count']] \
+        .groupby('vaccine_date') \
+        .sum()
+
+    if format_datetime:
+        df_.index = df_.index.strftime("%d/%m/%Y")
+
+    return df_
+
+
+def vaccine_date_count_moving_avg(
+    format_datetime=True,
+    days_from_now=3,
+    from_day=None,
+    to_day=None
+):
+
+    from_day, to_day, interval = __calculate_interval(
+        days_from_now,
+        from_day,
+        to_day
+    )
+
+    df_ = vaccine_date_count_by_interval(
+        format_datetime=False,
+        days_from_now=days_from_now,
+        from_day=from_day,
+        to_day=to_day
+    ).rename(columns={'count': 'moving_avg'})
+
+    df_['moving_avg'] = (df_['moving_avg']/interval).astype(int)
+
+    if format_datetime:
+        df_.index = df_.index.strftime("%d/%m/%Y")
+
+    return df_
+
+
 def vaccine_by_service_group_and_vaccine_date_count(pivot=True):
     df_ = df[['id', 'service_group', 'vaccine_date']] \
         .groupby(['service_group', 'vaccine_date'], as_index=False) \
@@ -238,6 +307,7 @@ dfs_to_extract = [
     vaccine_by_service_group_and_vaccine_date_count,
     vaccine_by_service_group_and_vaccine_date_evolution,
     vaccine_date_count,
+    vaccine_date_count_moving_avg,
     uncategorized_service_group_by_area_count,
     uncategorized_service_group_by_area_percent,
     uncategorized_service_group_by_vaccination_site_full_data,

@@ -205,8 +205,6 @@ def uncategorized_service_group_by_vaccination_site_percent():
         .sort_values(['uncategorized_percent'], ascending=False)
 
 
-import pdb; pdb.set_trace()
-
 dfs_to_extract = [
     vaccination_count,
     vaccination_count_statistics,

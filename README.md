@@ -1,58 +1,71 @@
-# vacina-manaus-backend
+# vacina-manaus-backend 💉
 
-- [Prerequisites](#prerequisites)
-- [Build](#build)
-- [Running](#running)
-- [Support](#support)
-- [Contributing](#contributing)
+- [Sobre o projeto](#sobre-o-projeto)
+- [Começando](#começando)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Construindo o projeto](#construindo-o-projeto)
+  - [Executando](#running)
+- [Como contribuir](#como-contribuir)
+- [Licença](#licença)
 
-## Getting started
+## Sobre o projeto
 
-Run `make all` to build and execute all pipeline
+Este projeto tem como finalidade extrair os dados disponibilizados pela Prefeitura de Manaus sobre a vacinação na cidade e fornecer os dados para o site vacinamanaus.com
 
-### Prerequisites
+## Começando
+
+Rode `make all` para construir a imagem e rodar todo o pipeline
+
+### Pré-requisitos
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) >= 20.10.1
 - [Docker-composer](https://docs.docker.com/compose/install/) >= 1.27.4
 
-### Build
+### Construindo o projeto
 
-To build docker image execute:
+Para construir a imagem docker:
 
 ```bash
 make build
 ```
 
-To build docker image without cached dependencies:
+Para construir a imagem docker sem dependências armazenadas no cache:
 
 ```bash
 make build-no-cache
 ```
 
-### Running
+### Executando
 
-To extract data from `.pdf` files:
+Para baixar o ultimo arquivo publicado pela prefeitura:
+
+```bash
+make download-data
+```
+
+Para extrair os dados dos arquivos `.pdf`:
 
 ```bash
 make extract-data
 ```
 
-To process the extracted data:
+Para processar o arquivo de dados extraidos:
 
 ```bash
 make process-data
 ```
 
-To run all pipeline:
+Para rodar todo o pipeline de dados:
 
 ```bash
 make data
 ```
 
-## Support
+## Como contribuir
 
-Please [open a issue](https://github.com/CodeForManaus/vacina-manaus-backend/issues/new) for support
+- Abrindo [uma issue](https://github.com/CodeForManaus/vacina-manaus-backend/issues/new) reportando um bug ou sugerindo uma melhoria.
+- Por favor contribua usando o [Github Flow](https://guides.github.com/introduction/flow/). Cria uma branch, adicione os commits and [abra uma pull request](https://github.com/CodeForManaus/vacina-manaus-backend/compare).
 
-## Contributing
+## Licença
 
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits and [open a pull request](https://github.com/CodeForManaus/vacina-manaus-backend/compare).
+Veja a [LICENÇA](https://github.com/CodeForManaus/vacina-manaus-backend/blob/master/LICENSE.md)

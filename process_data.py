@@ -1,11 +1,16 @@
 # coding: utf-8
+import os
 
 import pandas as pd
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
 
-input = "db/013_Vacinados_2021_01_28_19_00_00.json"
+paths = os.listdir('db')
+# Add absolute path to get information about tha last modification to max method
+_paths = list(map(lambda x: 'db/{}'.format(x), paths))
+input = max(_paths, key=os.path.getctime)
+
 output_path = 'analytics'
 
 df = pd.read_json(input)

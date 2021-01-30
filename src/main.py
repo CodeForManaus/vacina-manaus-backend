@@ -13,13 +13,13 @@ def main():
     fileName = pdfDownloader.get_filename()
 
     logging.info("INIT Extracting")
-    input_paths = "raw_db/{}".format(fileName)
+    input_paths = "data/raw/{}".format(fileName)
     print(input_paths)
-    pdfExtractor = PdfExtractor(input_paths, "db/{}".format(fileName.replace("pdf", "json")))
+    pdfExtractor = PdfExtractor(input_paths, "data/cleaned/{}".format(fileName.replace("pdf", "json")))
     pdfExtractor.process()
 
     logging.info("INIT processing")
-    dataProcessor = DataProcessor(pdfExtractor.output_path, 'analytics')
+    dataProcessor = DataProcessor(pdfExtractor.output_path, 'analyzed')
     dataProcessor.process_all()
 
     logging.info("FINISH")

@@ -2,6 +2,7 @@
 import os
 
 import pandas as pd
+import csv
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
@@ -14,6 +15,11 @@ input = max(_paths, key=os.path.getctime)
 output_path = 'analytics'
 
 df = pd.read_json(input)
+
+def formatCPF(cpf):
+    if len(cpf) < 11:
+        cpf = cpf.zfill(11)
+    return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
 
 # DataFrame definitions
 
@@ -57,7 +63,9 @@ def area_count():
 
 
 def cpf_count():
-    return df[['cpf', 'id']]\
+    _df = df[['cpf', 'id']]
+    _df['cpf'] = _df.loc[:,'cpf'].astype(str).apply(formatCPF)
+    return _df\
         .groupby('cpf')\
         .count()\
         .rename(columns={'id': 'count'})\

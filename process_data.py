@@ -18,6 +18,14 @@ df = pd.read_json(input)
 # DataFrame definitions
 
 
+def __calculate_interval(days_from_now=3, from_day=None, to_day=None):
+    from_day = from_day or days_from_now * -1 + 1
+    to_day = to_day or 0
+    interval = len(range(from_day, to_day))+1
+
+    return from_day, to_day, interval
+
+
 def vaccination_count():
     df_ = pd.DataFrame(data={
         'vaccinated': [len(df)],
@@ -88,12 +96,25 @@ def priority_group_count():
         .sort_values(['count'], ascending=False)
 
 
-def vaccine_date_count():
-    return df[['vaccine_date', 'id']]\
+def vaccine_date_count(format_datetime=True):
+    df_ = df[['vaccine_date', 'id']]\
         .groupby('vaccine_date')\
         .count()\
         .rename(columns={'id': 'count'})\
         .sort_values(['vaccine_date'], ascending=True)
+
+    idx = pd.date_range(start=df_.index.min(), end=df_.index.max())
+
+    df_.index = pd.DatetimeIndex(df_.index)
+
+    df_ = df_.reindex(idx, fill_value=0)
+
+    df_.index = df_.index.rename('vaccine_date')
+
+    if format_datetime:
+        df_.index = df_.index.strftime("%d/%m/%Y")
+
+    return df_
 
 
 def vaccine_by_service_group_and_vaccine_date_count(pivot=True):

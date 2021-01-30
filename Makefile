@@ -18,7 +18,7 @@ data: download-data extract-data process-data
 
 .PHONY: download-data
 download-data:
-	@docker-compose run --rm ${SERVICE_NAME} python download_data.py
+	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python download_data.py
 
 .PHONY: extract-data
 extract-data:

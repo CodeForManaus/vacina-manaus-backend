@@ -34,12 +34,17 @@ header = [
 data = []
 
 
+def formatCPF(cpf):
+    if len(cpf) < 11:
+        cpf = cpf.zfill(11)
+    return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
+
 def extra_attribs(dictio_):
     dictio_.update(
         {
             'area': dictio['vaccination_site'].split('-', 1)[0].strip(),
             'vaccination_site': dictio['vaccination_site'].split('-', 1)[1].strip(),
-            'cpf': dictio['cpf'].replace('\'', ''),
+            'cpf': formatCPF(dictio['cpf'].replace('\'', '')),
             'valid_cpf': cpf_validator.validate(dictio['cpf'].replace('\'', ''))
         }
     )

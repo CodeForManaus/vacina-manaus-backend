@@ -3,6 +3,8 @@ import os
 
 import pandas as pd
 
+from progressDownload import ProgressDownload
+
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
 
@@ -314,5 +316,10 @@ dfs_to_extract = [
     uncategorized_service_group_by_vaccination_site_percent
 ]
 
+count = 1
+sizeDfs = len(dfs_to_extract)
+progressDownload = ProgressDownload()
 for df_to_extract in dfs_to_extract:
     df_to_extract().to_csv(''.join(['/'.join([output_path, df_to_extract.__name__]), '.csv']), encoding='utf-8-sig')
+    progressDownload(count,1, sizeDfs)
+    count += 1

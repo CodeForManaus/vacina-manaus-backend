@@ -5,6 +5,8 @@ import json
 import pdfplumber
 from validate_docbr import CPF
 
+from progressDownload import ProgressDownload
+
 paths = os.listdir('raw_db')
 
 # Add absolute path to get information about tha last modification to max method
@@ -69,6 +71,9 @@ i = 1
 
 pdf = pdfplumber.open(input_path)
 
+count = 1
+sizePages = len(pdf.pages)
+progressDownload = ProgressDownload()
 for page in range(len(pdf.pages)):
     table = pdf.pages[page].extract_table()
 
@@ -87,5 +92,7 @@ for page in range(len(pdf.pages)):
         data.append(dictio)
 
         i += 1
+    progressDownload(count,1,sizePages)
+    count +=1
 
 json.dump(data, output_file)

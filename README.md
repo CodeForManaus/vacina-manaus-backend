@@ -19,7 +19,7 @@ Rode `make all` para construir a imagem e rodar todo o pipeline
 ### Pré-requisitos
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/) >= 20.10.1
-- [Docker-composer](https://docs.docker.com/compose/install/) >= 1.27.4
+- [Docker Compose](https://docs.docker.com/compose/install/) >= 1.27.4
 
 ### Construindo o projeto
 
@@ -37,7 +37,7 @@ make build-no-cache
 
 ### Executando
 
-Para baixar o ultimo arquivo publicado pela prefeitura:
+Para baixar o último arquivo publicado pela prefeitura:
 
 ```bash
 make download-data
@@ -49,7 +49,7 @@ Para extrair os dados dos arquivos `.pdf`:
 make extract-data
 ```
 
-Para processar o arquivo de dados extraidos:
+Para processar o arquivo de dados extraídos:
 
 ```bash
 make process-data
@@ -64,7 +64,7 @@ make data
 ## Como contribuir
 
 - Abrindo [uma issue](https://github.com/CodeForManaus/vacina-manaus-backend/issues/new) reportando um bug ou sugerindo uma melhoria.
-- Por favor contribua usando o [Github Flow](https://guides.github.com/introduction/flow/). Cria uma branch, adicione os commits and [abra uma pull request](https://github.com/CodeForManaus/vacina-manaus-backend/compare).
+- Por favor contribua usando o [Github Flow](https://guides.github.com/introduction/flow/). Cria uma branch, adicione os commits e [abra uma pull request](https://github.com/CodeForManaus/vacina-manaus-backend/compare).
 
 ## Licença
 

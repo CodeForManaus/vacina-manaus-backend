@@ -15,6 +15,8 @@ from bs4 import BeautifulSoup
 import pytz
 import requests
 
+from progressDownload import ProgressDownload
+
 
 url = 'https://semsa.manaus.am.gov.br/sala-de-situacao/novo-coronavirus/'
 
@@ -56,7 +58,7 @@ for one_a_tag in soup.findAll('a'):
             filename = f'{basename}-{timestamp}.{ext}'
             filepath = 'raw_db/' + filename
 
-        urllib.request.urlretrieve(link, filepath)
+        urllib.request.urlretrieve(link, filepath, ProgressDownload())
 
         downloaded_file_checksum = sha1file(filepath)
         if current_file_checksum and hmac.compare_digest(

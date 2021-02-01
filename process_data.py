@@ -4,12 +4,12 @@ import sys
 
 import pandas as pd
 
-from progressDownload import ProgressDownload
+from progress_download import ProgressDownload
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
         
-def getNewestFilename():
+def get_latest_filename():
     paths = os.listdir('db')
     # Add absolute path to get information about tha last modification to max method
     _paths = list(map(lambda x: 'db/{}'.format(x), paths))
@@ -328,6 +328,6 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         fileName = sys.argv[1]
     else:
-        fileName = getNewestFilename()
+        fileName = get_latest_filename()
     dataProcessor = DataProcessor(fileName, 'analytics')
     dataProcessor.process_all()

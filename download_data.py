@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 import pytz
 import requests
 
-from progressDownload import ProgressDownload
+from progress_download import ProgressDownload
 
 
 class PdfDownloader:
@@ -59,6 +59,7 @@ class PdfDownloader:
                     timestamp = now.strftime('%Y%m%d%H%M')
                     basename, ext = filename.split(".")
                     filename = f'{basename}-{timestamp}.{ext}'
+                    self.filename = filename
                     filepath = 'raw_db/' + filename
 
                 urllib.request.urlretrieve(link, filepath, ProgressDownload())

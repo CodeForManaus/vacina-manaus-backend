@@ -2,12 +2,11 @@
 import os
 import sys
 
-
 import json
 import pdfplumber
 from validate_docbr import CPF
 
-from progressDownload import ProgressDownload
+from progress_download import ProgressDownload
 
 paths = os.listdir('raw_db')
 
@@ -19,7 +18,7 @@ filename = max(_paths, key=os.path.getctime).replace(
 
 input_path = "raw_db/{}.pdf".format(filename)
 
-def getNewestFilename():
+def get_latest_filename():
     paths = os.listdir('raw_db')
 
     # Add absolute path to get information about tha last modification to max method
@@ -111,7 +110,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         fileName = sys.argv[1]
     else:
-        fileName = getNewestFilename()
+        fileName = get_latest_filename()
 
     pdfExtractor = PdfExtractor(fileName, fileName.replace("raw_db","db").replace("pdf", "json"))
     pdfExtractor.process()

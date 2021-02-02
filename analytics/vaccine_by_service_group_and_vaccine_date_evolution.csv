@@ -1,13 +1,14 @@
-﻿vaccine_date,Assistentes Sociais,Auxiliar de Enfermagem,Biomédico,Cozinheiro e Auxiliares,Cuidador de Idosos,Enfermeiro(a),Farmacêutico,Fisioterapeutas,Fonoaudiólogo,Funcionário do Sistema Funerário que tenham contato com cadáveres potencialmente contaminados,Motorista de Ambulância,Médico,Médico Veterinário,Nutricionista,Odontologista,Outros,Pessoal da Limpeza,Pessoas com Deficiência Institucionalizadas,Pessoas de 60 a 64 anos,Pessoas de 60 anos ou mais IPnesstsitouacsi odnea 6li0za das,Pessoas de 60 anos ou mais Institucionalizadas,Pessoas de 65 a 69 anos,Pessoas de 70 a 74 anos,Pessoas de 75 a 79 anos,Pessoas de 80 anos ou mais,Povos indígenas em terras iPnodvíoges ninadsígenas,Povos indígenas em terras indígenas,Profissionais de Educação Física,Psicólogo,Recepcionista,Segurança,Terapeuta Ocupacional,Técnico de Enfermagem,Técnico de Odontologia,Técnico de Veterinário,anos ou mais Institucionalizadas,em terras iPnodvíoges ninadsígenas,em terras indígenas
-19/01/2021,10,11,0,1,0,80,11,0,0,0,0,80,0,0,35,135,24,0,0,0,0,0,0,0,0,0,0,1,0,3,2,0,143,16,0,0,0,0
-20/01/2021,59,91,10,38,0,662,99,118,5,1,24,949,1,17,76,1189,200,0,0,0,0,0,0,0,0,0,0,1,20,74,20,1,1530,38,1,0,0,0
-22/01/2021,62,94,10,40,0,694,108,137,5,1,24,997,1,20,76,1208,201,0,0,0,0,0,0,0,0,10,108,1,20,74,20,1,1681,38,1,0,4,11
-23/01/2021,64,99,12,52,0,788,116,174,5,1,25,1057,2,22,76,1322,255,0,0,0,0,0,0,0,0,16,153,1,23,81,20,1,1976,38,1,0,5,16
-24/01/2021,64,99,12,52,0,788,116,174,5,1,25,1057,2,22,76,1322,255,0,0,0,0,0,0,0,0,18,188,1,23,81,20,1,1976,38,1,0,6,19
-25/01/2021,69,103,13,58,0,941,126,186,7,1,29,1202,2,23,83,1429,313,0,0,0,0,0,0,0,0,18,188,1,24,88,33,1,2302,39,2,0,6,19
-26/01/2021,69,106,13,58,3,976,126,196,7,1,29,1219,2,23,83,1442,326,0,0,0,113,0,0,0,0,18,188,1,26,88,33,1,2369,39,2,0,6,19
-27/01/2021,69,124,13,59,3,1027,126,216,9,1,29,1292,2,23,85,1472,396,4,0,3,149,0,0,0,0,18,188,2,28,108,57,2,2573,39,2,4,6,19
-28/01/2021,69,152,13,59,3,1160,126,242,12,1,127,1418,3,23,87,1499,411,4,0,3,149,0,0,0,0,18,188,2,28,134,57,2,2993,39,2,4,6,19
-29/01/2021,69,155,13,59,3,1248,126,272,15,1,179,1572,3,24,87,1509,412,4,0,3,149,0,3,6,2849,18,188,2,28,144,57,2,3220,39,4,4,6,19
-30/01/2021,69,155,13,59,3,1249,126,273,15,1,179,1573,3,24,87,1510,412,4,2,3,149,0,3,6,5831,18,188,2,28,144,57,2,3231,39,4,4,6,19
-31/01/2021,69,155,13,59,3,1249,126,273,15,1,179,1573,3,24,87,1510,412,4,3,3,149,1,43,1398,7718,18,188,2,28,144,57,2,3231,39,4,4,6,19
+﻿vaccine_date,Assistentes Sociais,Auxiliar de Enfermagem,Biomédico,Cozinheiro e Auxiliares,Cuidador de Idosos,Enfermeiro(a),Farmacêutico,Fisioterapeutas,Fonoaudiólogo,Funcionário do Sistema Funerário que tenham contato com cadáveres potencialmente contaminados,Motorista de Ambulância,Médico,Médico Veterinário,Nutricionista,Odontologista,Outros,Pessoal da Limpeza,Pessoas com Deficiência Institucionalizadas,Pessoas de 60 a 64 anos,Pessoas de 60 anos ou mais IPnesstsitouacsi odnea 6li0za das,Pessoas de 60 anos ou mais Institucionalizadas,Pessoas de 65 a 69 anos,Pessoas de 70 a 74 anos,Pessoas de 75 a 79 anos,Pessoas de 80 anos ou mais,Povos indígenas em terras iPnodvíoges ninadsígenas,Povos indígenas em terras indígenas,Profissionais de Educação Física,Psicólogo,Recepcionista,Segurança,Terapeuta Ocupacional,Técnico de Enfermagem,Técnico de Odontologia,Técnico de Veterinário,anos ou mais IPnesstsitouacsi odnea 6li0za das,anos ou mais Institucionalizadas,em terras indígenas
+01/02/2021,0,0,0,0,0,8,0,4,0,0,0,6,0,0,1,6,0,0,0,0,0,2,20,1152,1238,0,0,0,1,1,0,0,8,0,0,0,0,0
+19/01/2021,10,12,0,1,0,92,11,4,0,0,0,87,0,0,36,145,23,0,0,0,0,2,20,1152,1238,0,0,1,1,4,2,0,153,16,0,0,0,0
+20/01/2021,59,91,10,38,0,670,99,122,5,1,24,955,1,17,77,1195,200,0,0,0,0,2,20,1152,1238,0,0,1,21,75,20,1,1538,38,1,0,0,0
+22/01/2021,62,94,10,40,0,702,108,141,5,1,24,1003,1,20,77,1214,201,0,0,0,0,2,20,1152,1238,0,132,1,21,75,20,1,1689,38,1,0,0,2
+23/01/2021,64,99,12,52,0,796,116,178,5,1,25,1063,2,22,77,1328,255,0,0,0,0,2,20,1152,1238,4,185,1,24,82,20,1,1984,38,1,0,0,2
+24/01/2021,64,99,12,52,0,796,116,178,5,1,25,1063,2,22,77,1328,255,0,0,0,0,2,20,1152,1238,5,222,1,24,82,20,1,1984,38,1,0,0,5
+25/01/2021,69,103,13,58,0,949,126,190,7,1,29,1208,2,23,84,1435,313,0,0,0,0,2,20,1152,1238,5,222,1,25,89,33,1,2310,39,2,0,0,5
+26/01/2021,69,106,13,58,3,984,126,200,7,1,29,1225,2,23,84,1448,326,0,0,8,95,2,20,1152,1238,5,222,1,27,89,33,1,2377,39,2,1,9,5
+27/01/2021,69,124,13,59,3,1035,126,220,9,1,29,1298,2,23,86,1478,396,4,0,10,134,2,20,1152,1238,5,222,2,29,109,57,2,2581,39,2,1,11,5
+28/01/2021,69,152,13,59,3,1168,126,246,12,1,127,1424,3,23,88,1505,411,4,0,10,134,2,20,1152,1238,5,222,2,29,135,57,2,3001,39,2,1,11,5
+29/01/2021,69,155,13,59,3,1256,126,276,15,1,179,1578,3,24,88,1515,412,4,0,10,134,2,23,1171,4075,5,222,2,29,145,57,2,3228,39,4,1,11,5
+30/01/2021,69,155,13,59,3,1257,126,277,15,1,179,1579,3,24,88,1516,412,4,2,10,134,2,23,1181,7049,5,222,2,29,145,57,2,3239,39,4,1,11,5
+31/01/2021,69,155,13,59,3,1257,126,277,15,1,179,1579,3,24,88,1516,412,4,3,10,134,3,70,3907,9880,5,222,2,29,145,57,2,3239,39,4,1,11,5

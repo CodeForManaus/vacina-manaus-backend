@@ -1,7 +1,6 @@
 """
     Code from https://towardsdatascience.com/how-to-web-scrape-with-python-in-4-minutes-bc49186a8460
 """
-import sys
 
 from datetime import datetime
 from glob import glob
@@ -9,7 +8,6 @@ import hashlib
 import hmac
 import os
 import sys
-import time
 import urllib.request
 
 from bs4 import BeautifulSoup
@@ -24,13 +22,12 @@ class PdfDownloader:
     def __init__(self, url):
         self.url = url
 
-    def __sha1file(self,filepath):
+    def __sha1file(self, filepath):
         sha1sum = hashlib.sha1()
         with open(filepath, "rb") as fd:
             for chunk in iter(lambda: fd.read(4096), b''):
                 sha1sum.update(chunk)
         return sha1sum
-
 
     def __get_latest_file(self):
         files = glob('raw_db/*.pdf')
@@ -78,10 +75,12 @@ class PdfDownloader:
 
         print(f'Download da lista {filepath} foi finalizado!')
 
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         url = sys.argv[1]
     else:
-        url = 'https://semsa.manaus.am.gov.br/sala-de-situacao/novo-coronavirus/'
+        url = 'https://semsa.manaus.am.gov.br/' \
+              'sala-de-situacao/novo-coronavirus/'
     pdfDownloader = PdfDownloader(url)
     pdfDownloader.download()

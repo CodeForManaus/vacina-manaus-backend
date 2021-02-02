@@ -8,20 +8,23 @@ from progress_download import ProgressDownload
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
-        
+
+
 def get_latest_filename():
     paths = os.listdir('db')
     # Add absolute path to get information about tha last modification to max method
     _paths = list(map(lambda x: 'db/{}'.format(x), paths))
     return max(_paths, key=os.path.getctime)
 
+
 class DataProcessor:
 
-    def __init__(self,input, output_path):
+    def __init__(self, input, output_path):
         self.df = pd.read_json(input)
         self.output_path = output_path
 
-    def __calculate_interval(self,days_from_now=3, from_day=None, to_day=None):
+    @staticmethod
+    def __calculate_interval(days_from_now=3, from_day=None, to_day=None):
         from_day = from_day or days_from_now * -1 + 1
         to_day = to_day or 0
         interval = len(range(from_day, to_day))+1
@@ -48,14 +51,12 @@ class DataProcessor:
 
         return df_
 
-
     def vaccination_site_count(self):
         return self.df[['vaccination_site', 'id']]\
             .groupby('vaccination_site')\
             .count()\
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
-
 
     def area_count(self):
         return self.df[['area', 'id']]\
@@ -84,8 +85,8 @@ class DataProcessor:
 
         return df_
 
-
-    def vaccine_date_count_by_interval(self,
+    def vaccine_date_count_by_interval(
+        self,
         format_datetime=True,
         days_from_now=3,
         from_day=None,
@@ -125,8 +126,8 @@ class DataProcessor:
 
         return df_
 
-
-    def vaccine_date_count_moving_avg(self,
+    def vaccine_date_count_moving_avg(
+        self,
         format_datetime=True,
         days_from_now=3,
         from_day=None,
@@ -153,14 +154,12 @@ class DataProcessor:
 
         return df_
 
-
     def cpf_count(self):
         return self.df[['cpf', 'id']]\
             .groupby('cpf')\
             .count()\
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
-
 
     def full_name_count(self):
         return self.df[['full_name', 'id']]\
@@ -169,14 +168,12 @@ class DataProcessor:
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
 
-
     def service_group_count(self):
         return self.df[['service_group', 'id']]\
             .groupby('service_group')\
             .count()\
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
-
 
     def priority_group_count(self):
         return self.df[['priority_group', 'id']]\
@@ -185,14 +182,12 @@ class DataProcessor:
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
 
-
     def uncategorized_service_group_by_area_count(self):
         return self.df.loc[self.df['service_group'] == 'Outros', ['area', 'id']] \
             .groupby('area') \
             .count() \
             .rename(columns={'id': 'count'}) \
             .sort_values(['count'], ascending=False)
-
 
     def uncategorized_service_group_by_area_full_data(self):
         df_ = self.uncategorized_service_group_by_area_count()\
@@ -205,11 +200,9 @@ class DataProcessor:
 
         return df_
 
-
     def uncategorized_service_group_by_area_percent(self):
         return self.uncategorized_service_group_by_area_full_data()[['uncategorized_percent']]\
             .sort_values(['uncategorized_percent'], ascending=False)
-
 
     def uncategorized_service_group_by_vaccination_site_count(self):
         return self.df.loc[self.df['service_group'] == 'Outros', ['vaccination_site', 'id']]\
@@ -217,7 +210,6 @@ class DataProcessor:
             .count()\
             .rename(columns={'id': 'count'})\
             .sort_values(['count'], ascending=False)
-
 
     def uncategorized_service_group_by_vaccination_site_full_data(self):
         df_ = self.uncategorized_service_group_by_vaccination_site_count()\
@@ -230,13 +222,11 @@ class DataProcessor:
 
         return df_
 
-
     def uncategorized_service_group_by_vaccination_site_percent(self):
         return self.uncategorized_service_group_by_vaccination_site_full_data()[['uncategorized_percent']]\
             .sort_values(['uncategorized_percent'], ascending=False)
 
-
-    def vaccine_by_service_group_and_vaccine_date_count(self,pivot=True):
+    def vaccine_by_service_group_and_vaccine_date_count(self, pivot=True):
         df_ = self.df[['id', 'service_group', 'vaccine_date']] \
             .groupby(['service_group', 'vaccine_date'], as_index=False) \
             .count() \
@@ -274,12 +264,15 @@ class DataProcessor:
 
         return df_
 
-
     def vaccine_by_service_group_and_vaccine_date_evolution(self, pivot=True):
         df_ = pd.merge(
-            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)[['service_group', 'vaccine_date']],
-            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)[['service_group', 'vaccine_date', 'count']]
-                .rename(columns={'vaccine_date': 'vaccine_date2'}),
+            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)
+            [['service_group', 'vaccine_date']],
+
+            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)
+            [['service_group', 'vaccine_date', 'count']]
+            .rename(columns={'vaccine_date': 'vaccine_date2'}),
+
             how='inner',
             on=['service_group']
         )
@@ -293,7 +286,6 @@ class DataProcessor:
             df_ = df_.pivot_table('count', ['vaccine_date'], 'service_group')
 
         return df_
-
 
     def process_all(self):
 
@@ -317,12 +309,18 @@ class DataProcessor:
         ]
 
         count = 1
-        sizeDfs = len(dfs_to_extract)
-        progressDownload = ProgressDownload()
+        size_dfs = len(dfs_to_extract)
+        progress_download = ProgressDownload()
         for df_to_extract in dfs_to_extract:
-            df_to_extract().to_csv(''.join(['/'.join([self.output_path, df_to_extract.__name__]), '.csv']), encoding='utf-8-sig')
-            progressDownload(count,1, sizeDfs)
+            df_to_extract().to_csv(
+                ''.join(
+                    ['/'.join([self.output_path, df_to_extract.__name__]), '.csv']
+                ), encoding='utf-8-sig'
+            )
+
+            progress_download(count, 1, size_dfs)
             count += 1
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

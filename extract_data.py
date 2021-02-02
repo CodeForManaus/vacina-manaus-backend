@@ -33,6 +33,9 @@ class PdfExtractor:
     def __init__(self, input_path, output_path):
         self.input_path = input_path
         self.output_path = output_path
+
+        self.raw_header_first_word = 'Nome Completo'
+
         self.header = [
                         'full_name',
                         'cpf',
@@ -43,6 +46,15 @@ class PdfExtractor:
                         'workplace',
                         'role'
                     ]
+
+    def __find_header_index(self, table):
+        for i in range(len(table)):
+            if self.raw_header_first_word in table[i]:
+                return i
+
+        # TODO: Specify exception
+
+        raise Exception
 
     @staticmethod
     def __format_cpf(cpf):
@@ -81,15 +93,27 @@ class PdfExtractor:
         data = []
         header = self.header
         output_file = open(self.output_path, 'w')
+
         pdf = pdfplumber.open(self.input_path)
 
         count = 1
         size_pages = len(pdf.pages)
         progress_download = ProgressDownload()
+
         for page in range(len(pdf.pages)):
-            table = pdf.pages[page].extract_table()
+            table = pdf.pages[page].extract_table(
+                table_settings={
+                    "vertical_strategy": "explicit",
+                    "horizontal_strategy": "lines",
+
+                    # TODO: Automatically identify columns (even if they are not delimited)
+                    "explicit_vertical_lines": [35, 210, 270, 315, 450, 520, 585, 660, 760],
+                }
+            )
 
             if page == 0:
+                table = table[self.__find_header_index(table):]
+
                 if not header:
                     header = self.__remove_line_breaks(table.pop(0))
                 else:

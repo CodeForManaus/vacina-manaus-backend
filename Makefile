@@ -36,4 +36,4 @@ process-main:
 
 .PHONY: lint
 lint:
-	@docker run --rm -v $(shell pwd):/apps alpine/flake8:3.8.4 $(shell find *.py)
+	@docker run --rm -v $(shell pwd):/apps alpine/flake8:3.8.4 --config=.flake8 $(shell find *.py)

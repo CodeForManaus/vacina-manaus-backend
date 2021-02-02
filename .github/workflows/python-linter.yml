@@ -1,7 +1,8 @@
 name: Run Python Linter
 
 on:
-  push:
+  pull_request:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
 
 jobs:
   update-data:

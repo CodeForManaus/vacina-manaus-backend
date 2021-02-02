@@ -18,6 +18,7 @@ filename = max(_paths, key=os.path.getctime).replace(
 
 input_path = "raw_db/{}.pdf".format(filename)
 
+
 def get_latest_filename():
     paths = os.listdir('raw_db')
 
@@ -25,6 +26,7 @@ def get_latest_filename():
     _paths = list(map(lambda x: 'raw_db/{}'.format(x), paths))
 
     return max(_paths, key=os.path.getctime)
+
 
 class PdfExtractor:
 
@@ -42,7 +44,8 @@ class PdfExtractor:
                         'role'
                     ]
 
-    def __formatCPF(self, cpf):
+    @staticmethod
+    def __format_cpf(cpf):
         if len(cpf) < 11:
             cpf = cpf.zfill(11)
         return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
@@ -53,19 +56,19 @@ class PdfExtractor:
             {
                 'area': dictio_['vaccination_site'].split('-', 1)[0].strip(),
                 'vaccination_site': dictio_['vaccination_site'].split('-', 1)[1].strip(),
-                'cpf': self.__formatCPF(dictio_['cpf'].replace('\'', '')),
+                'cpf': self.__format_cpf(dictio_['cpf'].replace('\'', '')),
                 'valid_cpf': cpf_validator.validate(dictio_['cpf'].replace('\'', ''))
             }
         )
 
         return dictio_
 
-
-    def __remove_line_breaks(self,arr):
+    @staticmethod
+    def __remove_line_breaks(arr):
         return list(map(lambda v: v.replace('\n', ''), arr))
 
-
-    def __get_dict(self,header_, record_):
+    @staticmethod
+    def __get_dict(header_, record_):
         if len(header_) != len(record_):
             # TODO: Specify exception
 
@@ -79,10 +82,10 @@ class PdfExtractor:
         header = self.header
         output_file = open(self.output_path, 'w')
         pdf = pdfplumber.open(self.input_path)
-        
+
         count = 1
-        sizePages = len(pdf.pages)
-        progressDownload = ProgressDownload()
+        size_pages = len(pdf.pages)
+        progress_download = ProgressDownload()
         for page in range(len(pdf.pages)):
             table = pdf.pages[page].extract_table()
 
@@ -101,10 +104,11 @@ class PdfExtractor:
                 data.append(dictio)
 
                 i += 1
-            progressDownload(count,1,sizePages)
-            count +=1
+            progress_download(count, 1, size_pages)
+            count += 1
 
         json.dump(data, output_file)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -112,5 +116,5 @@ if __name__ == "__main__":
     else:
         fileName = get_latest_filename()
 
-    pdfExtractor = PdfExtractor(fileName, fileName.replace("raw_db","db").replace("pdf", "json"))
+    pdfExtractor = PdfExtractor(fileName, fileName.replace("raw_db", "db").replace("pdf", "json"))
     pdfExtractor.process()

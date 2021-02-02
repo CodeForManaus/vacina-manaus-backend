@@ -32,3 +32,8 @@ process-data:
 .PHONY: process-main
 process-main:
 	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python main.py
+
+
+.PHONY: lint
+lint:
+	@docker run -it --rm -v $(shell pwd):/apps alpine/flake8:3.8.4 $(shell find *.py)

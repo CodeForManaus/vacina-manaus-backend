@@ -3,6 +3,7 @@ import os
 import sys
 
 import json
+
 import pdfplumber
 from validate_docbr import CPF
 
@@ -33,6 +34,7 @@ class PdfExtractor:
     def __init__(self, input_path, output_path):
         self.input_path = input_path
         self.output_path = output_path
+        self.raw_header_first_word = 'Nome Completo'
         self.header = [
                         'full_name',
                         'cpf',
@@ -44,11 +46,83 @@ class PdfExtractor:
                         'role'
                     ]
 
+        self.__open_file()
+
+    def __find_header_index(self, table):
+        for i in range(len(table)):
+            if self.raw_header_first_word in table[i]:
+                return i
+
+        # TODO: Specify exception
+
+        raise Exception
+
     @staticmethod
     def __format_cpf(cpf):
         if len(cpf) < 11:
             cpf = cpf.zfill(11)
         return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
+
+    def __open_file(self):
+
+        print('Opening file...')
+
+        self.pdf = pdfplumber.open(self.input_path)
+        self.columns = self.__find_columns()
+
+    def __find_columns(self):
+        candidate_cols = {}
+        num_cols_to_find = len(self.header)+1
+        allowed_minimum_distance_between_cols = 25  # pixels
+
+        progress_download = ProgressDownload()
+
+        pages = len(self.pdf.pages)
+
+        print('Analyzing file to find columns...')
+
+        for page in range(pages):
+            progress_download(page + 1, 1, pages)
+
+            table = self.pdf.pages[page].find_tables(
+                {
+                    "vertical_strategy": "text",
+                    "horizontal_strategy": "lines",
+                    "keep_blank_chars": True,
+                    "text_tolerance": 1,
+                }
+            )[0]
+
+            # Gets all left/right cell delimiters as a sorted tuple of unique delimiters
+            cols = tuple(
+                sorted(set([cell[0] for cell in table.cells])) +
+                sorted(
+                    set([cell[2] for cell in table.cells]) - set([cell[0] for cell in table.cells])
+                )
+            )
+
+            if len(cols) != num_cols_to_find:
+                continue
+
+            minimum_distance_between_cols = min([cols[i] - cols[i-1] for i in range(1, len(cols))])
+
+            if minimum_distance_between_cols < allowed_minimum_distance_between_cols:
+                continue
+
+            if cols in candidate_cols.keys():
+                candidate_cols[cols] += 1
+            else:
+                candidate_cols[cols] = 1
+
+        # Sort candidate columns by number of appearances
+        candidate_cols = dict(sorted(candidate_cols.items(), key=lambda value: value[1], reverse=True))
+
+        elected = list(next(iter(candidate_cols)))
+
+        print('Elected: {}'.format(elected))
+
+        # Returns the one that appeared most times
+        return elected
 
     def __extra_attribs(self, dictio_):
         cpf_validator = CPF()
@@ -81,15 +155,25 @@ class PdfExtractor:
         data = []
         header = self.header
         output_file = open(self.output_path, 'w')
-        pdf = pdfplumber.open(self.input_path)
 
-        count = 1
-        size_pages = len(pdf.pages)
         progress_download = ProgressDownload()
-        for page in range(len(pdf.pages)):
-            table = pdf.pages[page].extract_table()
+
+        pages = len(self.pdf.pages)
+
+        print('Processing file...')
+
+        for page in range(pages):
+            table = self.pdf.pages[page].extract_table(
+                table_settings={
+                    "vertical_strategy": "explicit",
+                    "horizontal_strategy": "lines",
+                    "explicit_vertical_lines": self.columns,
+                }
+            )
 
             if page == 0:
+                table = table[self.__find_header_index(table):]
+
                 if not header:
                     header = self.__remove_line_breaks(table.pop(0))
                 else:
@@ -104,8 +188,10 @@ class PdfExtractor:
                 data.append(dictio)
 
                 i += 1
-            progress_download(count, 1, size_pages)
-            count += 1
+
+            progress_download(page+1, 1, pages)
+
+        print('Saving output file...')
 
         json.dump(data, output_file)
 

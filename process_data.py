@@ -68,7 +68,9 @@ class DataProcessor:
             .sort_values(['count'], ascending=False)
 
     def vaccine_date_count(self, format_datetime=True):
-        df_ = self.df[['vaccine_date', 'id']]\
+        df_ = self.df[['vaccine_date', 'id']]
+
+        df_ = df_.loc[df_['vaccine_date'] >= '2021-01-01'] \
             .groupby('vaccine_date')\
             .count()\
             .rename(columns={'id': 'count'})\
@@ -320,6 +322,7 @@ class DataProcessor:
         size_dfs = len(dfs_to_extract)
         progress_download = ProgressDownload()
         for df_to_extract in dfs_to_extract:
+
             df_to_extract().to_csv(
                 ''.join(
                     ['/'.join([self.output_path, df_to_extract.__name__]), '.csv']

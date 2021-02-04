@@ -23,6 +23,8 @@ class DataProcessor:
         self.df = pd.read_json(input)
         self.output_path = output_path
 
+        self.df['vaccine_date'] = pd.to_datetime(self.df['vaccine_date'], format='%d/%m/%Y')
+
     @staticmethod
     def __calculate_interval(days_from_now=3, from_day=None, to_day=None):
         from_day = from_day or days_from_now * -1 + 1
@@ -226,7 +228,7 @@ class DataProcessor:
         return self.uncategorized_service_group_by_vaccination_site_full_data()[['uncategorized_percent']]\
             .sort_values(['uncategorized_percent'], ascending=False)
 
-    def vaccine_by_service_group_and_vaccine_date_count(self, pivot=True):
+    def vaccine_by_service_group_and_vaccine_date_count(self, pivot=True, format_datetime=True):
         df_ = self.df[['id', 'service_group', 'vaccine_date']] \
             .groupby(['service_group', 'vaccine_date'], as_index=False) \
             .count() \
@@ -262,14 +264,17 @@ class DataProcessor:
         if pivot:
             df_ = df_.pivot_table('count', ['vaccine_date'], 'service_group')
 
+        if format_datetime:
+            df_.index = df_.index.strftime("%d/%m/%Y")
+
         return df_
 
-    def vaccine_by_service_group_and_vaccine_date_evolution(self, pivot=True):
+    def vaccine_by_service_group_and_vaccine_date_evolution(self, pivot=True, format_datetime=True):
         df_ = pd.merge(
-            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)
+            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False, format_datetime=False)
             [['service_group', 'vaccine_date']],
 
-            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False)
+            self.vaccine_by_service_group_and_vaccine_date_count(pivot=False, format_datetime=False)
             [['service_group', 'vaccine_date', 'count']]
             .rename(columns={'vaccine_date': 'vaccine_date2'}),
 
@@ -284,6 +289,9 @@ class DataProcessor:
 
         if pivot:
             df_ = df_.pivot_table('count', ['vaccine_date'], 'service_group')
+
+        if format_datetime:
+            df_.index = df_.index.strftime("%d/%m/%Y")
 
         return df_
 

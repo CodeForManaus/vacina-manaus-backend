@@ -25,6 +25,8 @@ class DataProcessor:
 
         self.df['vaccine_date'] = pd.to_datetime(self.df['vaccine_date'], format='%d/%m/%Y')
 
+
+
     @staticmethod
     def __calculate_interval(days_from_now=3, from_day=None, to_day=None):
         from_day = from_day or days_from_now * -1 + 1
@@ -68,7 +70,9 @@ class DataProcessor:
             .sort_values(['count'], ascending=False)
 
     def vaccine_date_count(self, format_datetime=True):
-        df_ = self.df[['vaccine_date', 'id']]\
+        df_ = self.df[['vaccine_date', 'id']]
+
+        df_ = df_.loc[df_['vaccine_date'] >= '2021-01-01'] \
             .groupby('vaccine_date')\
             .count()\
             .rename(columns={'id': 'count'})\
@@ -298,28 +302,31 @@ class DataProcessor:
     def process_all(self):
 
         dfs_to_extract = [
-            self.vaccination_count,
-            self.vaccination_count_statistics,
-            self.vaccination_site_count,
-            self.area_count,
-            self.cpf_count,
-            self.full_name_count,
-            self.service_group_count,
-            self.priority_group_count,
-            self.vaccine_by_service_group_and_vaccine_date_count,
-            self.vaccine_by_service_group_and_vaccine_date_evolution,
-            self.vaccine_date_count,
+            # self.vaccination_count,
+            # self.vaccination_count_statistics,
+            # self.vaccination_site_count,
+            # self.area_count,
+            # self.cpf_count,
+            # self.full_name_count,
+            # self.service_group_count,
+            # self.priority_group_count,
+            # self.vaccine_by_service_group_and_vaccine_date_count,
+            # self.vaccine_by_service_group_and_vaccine_date_evolution,
+            # self.vaccine_date_count,
             self.vaccine_date_count_moving_avg,
-            self.uncategorized_service_group_by_area_count,
-            self.uncategorized_service_group_by_area_percent,
-            self.uncategorized_service_group_by_vaccination_site_full_data,
-            self.uncategorized_service_group_by_vaccination_site_percent
+            # self.uncategorized_service_group_by_area_count,
+            # self.uncategorized_service_group_by_area_percent,
+            # self.uncategorized_service_group_by_vaccination_site_full_data,
+            # self.uncategorized_service_group_by_vaccination_site_percent
         ]
 
         count = 1
         size_dfs = len(dfs_to_extract)
         progress_download = ProgressDownload()
         for df_to_extract in dfs_to_extract:
+
+            #print('Processing dataframe: {}'.format(df_to_extract.__name__))
+
             df_to_extract().to_csv(
                 ''.join(
                     ['/'.join([self.output_path, df_to_extract.__name__]), '.csv']

@@ -124,12 +124,33 @@ class PdfExtractor:
         # Returns the one that appeared most times
         return elected
 
+    @staticmethod
+    def __get_area_by_vaccination_site(vaccination_site):
+        area = 'NÃO ESPECIFICADA'
+
+        data = vaccination_site.split('-', 1)
+
+        if len(data) == 2:
+            area = data[0].strip()
+
+        return area
+
+    @staticmethod
+    def __get_vaccination_site_name(vaccination_site):
+        data = vaccination_site.split('-', 1)
+
+        if len(data) == 2:
+            vaccination_site = data[1].strip()
+
+        return vaccination_site
+
     def __extra_attribs(self, dictio_):
         cpf_validator = CPF()
+
         dictio_.update(
             {
-                'area': dictio_['vaccination_site'].split('-', 1)[0].strip(),
-                'vaccination_site': dictio_['vaccination_site'].split('-', 1)[1].strip(),
+                'area': self.__get_area_by_vaccination_site(dictio_['vaccination_site']),
+                'vaccination_site': self.__get_vaccination_site_name(dictio_['vaccination_site']),
                 'cpf': self.__format_cpf(dictio_['cpf'].replace('\'', '')),
                 'valid_cpf': cpf_validator.validate(dictio_['cpf'].replace('\'', ''))
             }

@@ -1,4 +1,5 @@
 # coding: utf-8
+
 import os
 import sys
 
@@ -8,6 +9,7 @@ from progress_download import ProgressDownload
 
 MANAUS_ESTIMATED_POPULATION = 2219580
 VACCINE_TARGET = 70  # %
+VACCINE_TARGET_ESTIMATED_POPULATION = MANAUS_ESTIMATED_POPULATION*VACCINE_TARGET/100
 
 
 def get_latest_filename():
@@ -26,7 +28,7 @@ class DataProcessor:
         self.df['vaccine_date'] = pd.to_datetime(self.df['vaccine_date'], format='%d/%m/%Y')
 
     @staticmethod
-    def __calculate_interval(days_from_now=3, from_day=None, to_day=None):
+    def __calculate_interval(days_from_now: int = 3, from_day: int = None, to_day: int = None):
         from_day = from_day or days_from_now * -1 + 1
         to_day = to_day or 0
         interval = len(range(from_day, to_day))+1
@@ -89,6 +91,14 @@ class DataProcessor:
 
         return df_
 
+    def vaccine_evolution_by_date(self, format_datetime=True):
+        df_ = self.vaccine_date_count(format_datetime=False).cumsum()
+
+        if format_datetime:
+            df_.index = df_.index.strftime("%d/%m/%Y")
+
+        return df_
+
     def vaccine_date_count_by_interval(
         self,
         format_datetime=True,
@@ -144,14 +154,57 @@ class DataProcessor:
             to_day
         )
 
+        moving_avg_key = 'moving_avg_{}_days'.format(interval)
+
         df_ = self.vaccine_date_count_by_interval(
             format_datetime=False,
             days_from_now=days_from_now,
             from_day=from_day,
             to_day=to_day
-        ).rename(columns={'count': 'moving_avg'})
+        ).rename(columns={'count': moving_avg_key})
 
-        df_['moving_avg'] = (df_['moving_avg']/interval).astype(int)
+        df_[moving_avg_key] = (df_[moving_avg_key]/interval).astype(int)
+
+        if format_datetime:
+            df_.index = df_.index.strftime("%d/%m/%Y")
+
+        return df_
+
+    def vaccine_trend(
+        self,
+        format_datetime=True,
+        days_from_now=3,
+        from_day=None,
+        to_day=None
+    ):
+
+        from_day, to_day, interval = self.__calculate_interval(
+            days_from_now,
+            from_day,
+            to_day
+        )
+
+        df_ = pd.merge(
+            self.vaccine_evolution_by_date(
+                format_datetime=False,
+            ).reset_index(),
+            self.vaccine_date_count_moving_avg(
+                format_datetime=False,
+                days_from_now=days_from_now,
+                from_day=from_day,
+                to_day=to_day
+            ).reset_index(),
+            how='inner',
+            on='vaccine_date',
+        ).set_index('vaccine_date')
+
+        moving_avg_key = 'moving_avg_{}_days'.format(interval)
+        trend_key = 'trend_{}_days'.format(interval)
+
+        df_['remaining_vaccination'] = VACCINE_TARGET_ESTIMATED_POPULATION - df_['count']
+        df_[trend_key] = (df_['remaining_vaccination']/df_[moving_avg_key]).astype(int)
+
+        df_ = df_[[trend_key]]
 
         if format_datetime:
             df_.index = df_.index.strftime("%d/%m/%Y")
@@ -312,6 +365,7 @@ class DataProcessor:
             self.vaccine_by_service_group_and_vaccine_date_evolution,
             self.vaccine_date_count,
             self.vaccine_date_count_moving_avg,
+            self.vaccine_trend,
             self.uncategorized_service_group_by_area_count,
             self.uncategorized_service_group_by_area_percent,
             self.uncategorized_service_group_by_vaccination_site_full_data,

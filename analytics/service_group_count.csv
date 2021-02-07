@@ -1,11 +1,11 @@
 ﻿service_group,count
 Pessoas de 80 anos ou mais,15472
 Pessoas de 75 a 79 anos,11130
-Outros,8698
+Outros,8701
 Técnico de Enfermagem,5975
 Médico,2560
 Enfermeiro(a),2449
-Pessoal da Limpeza,833
+Pessoal da Limpeza,834
 Pessoas de 70 a 74 anos,623
 Fisioterapeutas,623
 Odontologista,468
@@ -26,14 +26,13 @@ Biomédico,62
 Cuidador de Idosos,19
 Pessoas de 65 a 69 anos,10
 Terapeuta Ocupacional,10
-Pessoas de 60 a 64 anos,6
-Biólogo,6
+Pessoas com Deficiência,9
 Médico Veterinário,6
-Pessoas com Deficiência,5
-Pessoas com Deficiência Institucionalizadas,4
+Biólogo,6
+Pessoas de 60 a 64 anos,6
+Pessoas com Deficiência Institucionalizadas,5
 Técnico de Veterinário,4
 Profissionais de Educação Física,3
-Força Aérea Brasileira - FAB,3
-Funcionário do Sistema Funerário que tenham contato com cadáveres potencialmente contaminados,1
 Funcionário do Sistema Funerário,1
 Auxiliar de Veterinário,1
+Funcionário do Sistema Funerário que tenham contato com cadáveres potencialmente contaminados,1

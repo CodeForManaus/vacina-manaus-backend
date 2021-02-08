@@ -3,6 +3,7 @@ import os
 import sys
 
 import json
+from decimal import Decimal
 
 import pdfplumber
 from validate_docbr import CPF
@@ -68,7 +69,17 @@ class PdfExtractor:
         print('Opening file...')
 
         self.pdf = pdfplumber.open(self.input_path)
-        self.columns = self.__find_columns()
+        self.columns = [
+            Decimal('38.904'),
+            Decimal('210.530'),
+            Decimal('273.050'),
+            Decimal('315.890'),
+            Decimal('455.110'),
+            Decimal('520.900'),
+            Decimal('586.300'),
+            Decimal('662.020'),
+            Decimal('763.599')
+        ]
 
     def __find_columns(self):
         candidate_cols = {}

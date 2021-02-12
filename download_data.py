@@ -21,6 +21,7 @@ class PdfDownloader:
 
     def __init__(self, url):
         self.url = url
+        self.filename = None
 
     def __sha1file(self, filepath):
         sha1sum = hashlib.sha1()
@@ -56,7 +57,6 @@ class PdfDownloader:
                     timestamp = now.strftime('%Y%m%d%H%M')
                     basename, ext = filename.split(".")
                     filename = f'{basename}-{timestamp}.{ext}'
-                    self.filename = filename
                     filepath = 'raw_db/' + filename
 
                 urllib.request.urlretrieve(link, filepath, ProgressDownload())
@@ -68,12 +68,16 @@ class PdfDownloader:
                     os.remove(filepath)
                     sys.exit('File already downloaded!')
 
+        self.filename = filename
         today = now.strftime('%d/%m/%Y')
         fd = open('analytics/last_update_date.csv', 'w+')
         fd.writelines(['last_update_date\n', today])
         fd.close()
 
         print(f'Download da lista {filepath} foi finalizado!')
+
+    def get_filename(self):
+        return self.filename
 
 
 if __name__ == "__main__":

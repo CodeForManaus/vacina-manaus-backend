@@ -10,7 +10,7 @@ def main():
     logging.info("INIT DOWNLOAD")
     pdfDownloader = PdfDownloader(url)
     pdfDownloader.download()
-    fileName = pdfDownloader.filename
+    fileName = pdfDownloader.get_filename()
 
     logging.info("INIT Extracting")
     input_paths = "raw_db/{}".format(fileName)

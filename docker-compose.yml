@@ -8,4 +8,4 @@ services:
     container_name: vacina-manaus-backend
     restart: unless-stopped
     volumes:
-      - .:/app
+      - .:/vacina-manaus-backend

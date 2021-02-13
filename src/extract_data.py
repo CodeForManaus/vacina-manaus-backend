@@ -1,9 +1,10 @@
 # coding: utf-8
+
+import csv
 import gc
 import os
 import sys
 
-import json
 from decimal import Decimal
 
 import pdfplumber
@@ -221,15 +222,31 @@ class PdfExtractor:
 
     def process(self):
         i = 1
-        data = []
         header = self.header
-        output_file = open(self.output_path, 'w')
 
         progress_download = ProgressDownload()
 
         pages = len(self.pdf.pages)
 
+        headers_csv = [
+            'id',
+            'full_name',
+            'cpf',
+            'valid_cpf',
+            'vaccine_date',
+            'vaccination_site',
+            'priority_group',
+            'service_group',
+            'workplace',
+            'role',
+            'area'
+        ]
+
         print('Processing file...')
+
+        fd = open(self.output_path, 'w')
+        writer = csv.DictWriter(fd, fieldnames=headers_csv)
+        writer.writeheader()
 
         for page in range(pages):
             table = self.pdf.pages[page].extract_table(
@@ -248,6 +265,7 @@ class PdfExtractor:
                 else:
                     table.pop(0)
 
+            data = []
             for record in table:
                 dictio = self.__get_dict(header, self.__remove_line_breaks(record))
                 self.__extra_attribs(dictio)
@@ -258,13 +276,15 @@ class PdfExtractor:
 
                 i += 1
 
+                for entry in data:
+                    writer.writerow(entry)
+
             self.pdf.pages[page].flush_cache()
 
             progress_download(page+1, 1, pages)
 
         print('Saving output file...')
-
-        json.dump(data, output_file)
+        fd.close()
 
 
 if __name__ == "__main__":
@@ -273,5 +293,5 @@ if __name__ == "__main__":
     else:
         fileName = get_latest_filename()
 
-    pdfExtractor = PdfExtractor(fileName, fileName.replace("data/raw", "data/cleaned").replace("pdf", "json"))
+    pdfExtractor = PdfExtractor(fileName, fileName.replace("data/raw", "data/cleaned").replace("pdf", "csv"))
     pdfExtractor.process()

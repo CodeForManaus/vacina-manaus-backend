@@ -22,7 +22,7 @@ def get_latest_filename():
 class DataProcessor:
 
     def __init__(self, input, output_path):
-        self.df = pd.read_json(input)
+        self.df = pd.read_csv(input)
         self.output_path = output_path
 
         self.df['vaccine_date'] = pd.to_datetime(self.df['vaccine_date'], format='%d/%m/%Y')

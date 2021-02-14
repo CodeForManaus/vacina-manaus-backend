@@ -1,11 +1,10 @@
-FROM python:3.8.7-slim
+FROM python:3.9
 
 RUN apt-get -yq update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-            automake \
-            make \
-            gcc \
-            g++ \
+            build-essential \
+            poppler-utils \
+            pdftk \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
 

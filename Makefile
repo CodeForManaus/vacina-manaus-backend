@@ -56,6 +56,11 @@ split-pdf:
 extract-data:
 	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python src/extract_data.py
 
+.PHONY: concatenate-csv
+concatenate-csv:
+	@cat tmp/csv/*.csv > data/cleaned/${shell echo ${LATEST_PDF} | cut  -d "." -f1}.csv
+	@rm -rf tmp
+
 .PHONY: process-data
 process-data:
 	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} python src/process_data.py

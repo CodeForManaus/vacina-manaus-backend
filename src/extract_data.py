@@ -1,7 +1,10 @@
 # coding: utf-8
 
+from concurrent.futures import ThreadPoolExecutor
+import copy
 import csv
 import gc
+import fnmatch
 import os
 import sys
 
@@ -10,8 +13,6 @@ from decimal import Decimal
 import pdfplumber
 import psutil
 from validate_docbr import CPF
-
-from progress_download import ProgressDownload
 
 paths = os.listdir('data/raw')
 
@@ -122,15 +123,11 @@ class PdfExtractor:
         num_cols_to_find = len(self.header)+1
         allowed_minimum_distance_between_cols = 25  # pixels
 
-        progress_download = ProgressDownload()
-
         pages = len(self.pdf.pages)
 
         print('Analyzing file to find columns...')
 
         for page in range(pages):
-            progress_download(page + 1, 1, pages)
-
             table = self.pdf.pages[page].find_tables(
                 {
                     "vertical_strategy": "text",
@@ -220,16 +217,12 @@ class PdfExtractor:
 
         return {header_[i]: record_[i] for i in range(len(header_))}
 
-    def process(self):
-        i = 1
-        header = self.header
-
-        progress_download = ProgressDownload()
-
-        pages = len(self.pdf.pages)
+    def __extract_page_data(self, page):
+        print(f'Processing page {page}...')
+        csv_page_filepath = f'tmp/csv/page-{page}.csv'
+        fd = open(csv_page_filepath, 'w')
 
         headers_csv = [
-            'id',
             'full_name',
             'cpf',
             'valid_cpf',
@@ -241,15 +234,13 @@ class PdfExtractor:
             'role',
             'area'
         ]
-
-        print('Processing file...')
-
-        fd = open(self.output_path, 'w')
         writer = csv.DictWriter(fd, fieldnames=headers_csv)
-        writer.writeheader()
+        if page == 1:
+            writer.writeheader()
 
-        for page in range(pages):
-            table = self.pdf.pages[page].extract_table(
+        pdf_page_filepath = f'tmp/pdf/page-{page}.pdf'
+        with pdfplumber.open(pdf_page_filepath) as pdf:
+            table = pdf.pages[0].extract_table(
                 table_settings={
                     "vertical_strategy": "explicit",
                     "horizontal_strategy": "lines",
@@ -257,7 +248,8 @@ class PdfExtractor:
                 }
             )
 
-            if page == 0:
+            header = copy.deepcopy(self.header)
+            if page == 1:
                 table = table[self.__find_header_index(table):]
 
                 if not header:
@@ -269,18 +261,25 @@ class PdfExtractor:
                 dictio = self.__get_dict(header, self.__remove_line_breaks(record))
                 self.__extra_attribs(dictio)
 
-                dictio['id'] = i
-
-                i += 1
-
                 writer.writerow(dictio)
 
             self.pdf.pages[page].flush_cache()
 
-            progress_download(page+1, 1, pages)
-
-        print('Saving output file...')
+        print(f'Saving result page {page}...')
         fd.close()
+
+    def process(self):
+        pages = len(fnmatch.filter(os.listdir('tmp/pdf'), '*.pdf'))
+
+        print('Processing file...')
+
+        os.mkdir('tmp/csv')
+
+        with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
+            executor.map(
+                self.__extract_page_data,
+                range(1, pages + 1)
+            )
 
 
 if __name__ == "__main__":

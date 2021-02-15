@@ -23,9 +23,15 @@ class DataProcessor:
 
     def __init__(self, input, output_path):
         self.df = pd.read_csv(input)
+        self.df.reset_index(inplace=True)
+        self.df.rename(columns={'index': 'id'}, inplace=True)
         self.output_path = output_path
 
-        self.df['vaccine_date'] = pd.to_datetime(self.df['vaccine_date'], format='%d/%m/%Y')
+        self.df['vaccine_date'] = pd.to_datetime(
+            self.df['vaccine_date'],
+            format='%d/%m/%Y',
+            errors='coerce'
+        )
 
     @staticmethod
     def __calculate_interval(days_from_now: int = 3, from_day: int = None, to_day: int = None):

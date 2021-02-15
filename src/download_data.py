@@ -31,7 +31,7 @@ class PdfDownloader:
         return sha1sum
 
     def __get_latest_file(self):
-        files = glob('data/raw/*.pdf')
+        files = glob('data/decompressed/*.pdf')
         return max(files, key=os.path.getctime)
 
     def download(self):
@@ -48,7 +48,7 @@ class PdfDownloader:
             link = one_a_tag['href']
             if "Vacinados" in link:
                 filename = link.split("/")[-1]
-                filepath = 'data/raw/' + filename
+                filepath = 'data/decompressed/' + filename
                 latest_filepath = self.__get_latest_file()
                 current_file_checksum = self.__sha1file(latest_filepath)
 
@@ -57,7 +57,7 @@ class PdfDownloader:
                     timestamp = now.strftime('%Y%m%d%H%M')
                     basename, ext = filename.split(".")
                     filename = f'{basename}-{timestamp}.{ext}'
-                    filepath = 'data/raw/' + filename
+                    filepath = 'data/decompressed/' + filename
 
                 urllib.request.urlretrieve(link, filepath, ProgressDownload())
 

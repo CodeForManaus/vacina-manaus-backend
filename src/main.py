@@ -13,7 +13,7 @@ def main():
     fileName = pdfDownloader.get_filename()
 
     logging.info("INIT Extracting")
-    input_paths = "data/raw/{}".format(fileName)
+    input_paths = "data/decompressed/{}".format(fileName)
     print(input_paths)
     pdfExtractor = PdfExtractor(input_paths, "data/cleaned/{}".format(fileName.replace("pdf", "json")))
     pdfExtractor.process()

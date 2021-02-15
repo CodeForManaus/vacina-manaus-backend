@@ -265,19 +265,15 @@ class PdfExtractor:
                 else:
                     table.pop(0)
 
-            data = []
             for record in table:
                 dictio = self.__get_dict(header, self.__remove_line_breaks(record))
                 self.__extra_attribs(dictio)
 
                 dictio['id'] = i
 
-                data.append(dictio)
-
                 i += 1
 
-                for entry in data:
-                    writer.writerow(entry)
+                writer.writerow(dictio)
 
             self.pdf.pages[page].flush_cache()
 

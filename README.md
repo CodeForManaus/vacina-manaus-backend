@@ -1,6 +1,7 @@
 # vacina-manaus-backend 💉
 
 - [Sobre o projeto](#sobre-o-projeto)
+  - [Organização dos diretórios](#organização-dos-diretórios)
 - [Começando](#começando)
   - [Pré-requisitos](#pré-requisitos)
   - [Construindo o projeto](#construindo-o-projeto)
@@ -11,6 +12,14 @@
 ## Sobre o projeto
 
 Este projeto tem como finalidade extrair os dados disponibilizados pela Prefeitura de Manaus sobre a vacinação na cidade e fornecer os dados para o site vacinamanaus.com
+
+### Organização dos diretórios
+
+Este projeto está organizado nos seguintes diretórios:
+- `src`: Diretório contendo todos os códigos em Python que são executados durante o processo de tratamento e análise dos dados.
+- `data/raw`: Diretório contendo todos os relatórios em arquivos PDF disponibilizado pela secretaria de saúde e coletados através de um *web crawler*.
+- `data/cleaned`: Diretório contendo arquivos JSON que foram extraídos dos relatórios e tiveram os campos limpos e normalizados.
+- `data/analyzed`: Diretório contendo arquivos CSV que contém analises geradas a partir dos dados limpos. Estes arquivos alimentarão as visualizações do front-end.
 
 ## Começando
 

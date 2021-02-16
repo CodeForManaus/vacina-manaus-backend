@@ -4,7 +4,6 @@ from concurrent.futures import ThreadPoolExecutor
 import copy
 import csv
 import gc
-import fnmatch
 import os
 import sys
 
@@ -217,10 +216,10 @@ class PdfExtractor:
 
         return {header_[i]: record_[i] for i in range(len(header_))}
 
-    def __extract_page_data(self, page):
-        print(f'Processing page {page}...')
-        csv_page_filepath = f'tmp/csv/page-{page}.csv'
-        fd = open(csv_page_filepath, 'w')
+    def __extract_chunk_data(self, chunk):
+        print(f'Processing chunk {chunk}...')
+        csv_chunk_filepath = f'tmp/csv/chunk-{chunk}.csv'
+        fd = open(csv_chunk_filepath, 'w')
 
         headers_csv = [
             'full_name',
@@ -235,50 +234,50 @@ class PdfExtractor:
             'area'
         ]
         writer = csv.DictWriter(fd, fieldnames=headers_csv)
-        if page == 1:
+        if chunk == 0:
             writer.writeheader()
 
-        pdf_page_filepath = f'tmp/pdf/page-{page}.pdf'
-        with pdfplumber.open(pdf_page_filepath) as pdf:
-            table = pdf.pages[0].extract_table(
-                table_settings={
-                    "vertical_strategy": "explicit",
-                    "horizontal_strategy": "lines",
-                    "explicit_vertical_lines": self.columns,
-                }
-            )
+        pdf_chunk_filepath = f'tmp/pdf/chunk-{chunk}.pdf'
+        with pdfplumber.open(pdf_chunk_filepath) as pdf:
+            for page in range(len(pdf.pages)):
+                table = pdf.pages[page].extract_table(
+                    table_settings={
+                        "vertical_strategy": "explicit",
+                        "horizontal_strategy": "lines",
+                        "explicit_vertical_lines": self.columns,
+                    }
+                )
 
-            header = copy.deepcopy(self.header)
-            if page == 1:
-                table = table[self.__find_header_index(table):]
+                header = copy.deepcopy(self.header)
+                if chunk == 1:
+                    table = table[self.__find_header_index(table):]
 
-                if not header:
-                    header = self.__remove_line_breaks(table.pop(0))
-                else:
-                    table.pop(0)
+                    if not header:
+                        header = self.__remove_line_breaks(table.pop(0))
+                    else:
+                        table.pop(0)
 
-            for record in table:
-                dictio = self.__get_dict(header, self.__remove_line_breaks(record))
-                self.__extra_attribs(dictio)
+                for record in table:
+                    dictio = self.__get_dict(header, self.__remove_line_breaks(record))
+                    self.__extra_attribs(dictio)
+                    writer.writerow(dictio)
 
-                writer.writerow(dictio)
+                pdf.pages[page].flush_cache()
 
-            self.pdf.pages[page].flush_cache()
+            gc.collect()
 
         print(f'Saving result page {page}...')
         fd.close()
 
     def process(self):
-        pages = len(fnmatch.filter(os.listdir('tmp/pdf'), '*.pdf'))
-
         print('Processing file...')
 
-        os.mkdir('tmp/csv')
+        os.makedirs('tmp/csv', exist_ok=True)
 
         with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
             executor.map(
-                self.__extract_page_data,
-                range(1, pages + 1)
+                self.__extract_chunk_data,
+                range(os.cpu_count())
             )
 
 

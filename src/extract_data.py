@@ -26,6 +26,18 @@ filename = max(_paths, key=os.path.getctime).replace(
 input_path = "data/raw/{}.pdf".format(filename)
 
 
+pdf_header = [
+    'full_name',
+    'cpf',
+    'vaccine_date',
+    'vaccination_site',
+    'priority_group',
+    'service_group',
+    'workplace',
+    'role'
+]
+
+
 def get_latest_filename():
     paths = os.listdir('data/raw')
 
@@ -41,16 +53,6 @@ class PdfExtractor:
         self.input_path = input_path
         self.output_path = output_path
         self.raw_header_first_word = 'Nome Completo'
-        self.header = [
-                        'full_name',
-                        'cpf',
-                        'vaccine_date',
-                        'vaccination_site',
-                        'priority_group',
-                        'service_group',
-                        'workplace',
-                        'role'
-                    ]
 
         self.__pdf = None
 
@@ -121,7 +123,7 @@ class PdfExtractor:
         #  while it is not resolved, the function is not being used
 
         candidate_cols = {}
-        num_cols_to_find = len(self.header)+1
+        num_cols_to_find = len(pdf_header) + 1
         allowed_minimum_distance_between_cols = 25  # pixels
 
         pages = len(self.pdf.pages)
@@ -206,6 +208,14 @@ class PdfExtractor:
         return dictio_
 
     @staticmethod
+    def __row_blank(data):
+        for key in pdf_header:
+            if data[key].strip():
+                return False
+
+        return True
+
+    @staticmethod
     def __validate_date(date_str):
         try:
             datetime.strptime(date_str, '%d/%m/%Y')
@@ -259,7 +269,7 @@ class PdfExtractor:
                     }
                 )
 
-                header = copy.deepcopy(self.header)
+                header = copy.deepcopy(pdf_header)
                 if chunk.endswith('-1.pdf') and page == 0:
                     table = table[self.__find_header_index(table):]
 
@@ -270,6 +280,8 @@ class PdfExtractor:
 
                 for record in table:
                     dictio = self.__get_dict(header, self.__remove_line_breaks(record))
+                    if self.__row_blank(dictio):
+                        continue
                     self.__extra_attribs(dictio)
                     if not self.__validate_date(dictio['vaccine_date']):
                         dictio['vaccine_date'] = '01/01/2021'

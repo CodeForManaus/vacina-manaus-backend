@@ -1,6 +1,8 @@
 name: Update VacinaManaus data CI
 
 on:
+  schedule:
+    - cron: "00 03 * * *"
   workflow_dispatch:
 
 jobs:

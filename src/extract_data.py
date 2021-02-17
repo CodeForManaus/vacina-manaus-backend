@@ -3,6 +3,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import copy
 import csv
+from datetime import datetime
 import fnmatch
 import gc
 import os
@@ -211,6 +212,15 @@ class PdfExtractor:
         return dictio_
 
     @staticmethod
+    def __validate_date(date_str):
+        try:
+            datetime.strptime(date_str, '%d/%m/%Y')
+        except ValueError:
+            return False
+
+        return True
+
+    @staticmethod
     def __remove_line_breaks(arr):
         return list(map(lambda v: v.replace('\n', ''), arr))
 
@@ -267,6 +277,8 @@ class PdfExtractor:
                 for record in table:
                     dictio = self.__get_dict(header, self.__remove_line_breaks(record))
                     self.__extra_attribs(dictio)
+                    if not self.__validate_date(dictio['vaccine_date']):
+                        dictio['vaccine_date'] = '01/01/2021'
                     writer.writerow(dictio)
 
                 pdf.pages[page].flush_cache()

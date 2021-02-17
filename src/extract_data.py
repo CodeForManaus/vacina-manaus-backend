@@ -3,6 +3,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import copy
 import csv
+import fnmatch
 import gc
 import os
 import sys
@@ -218,7 +219,7 @@ class PdfExtractor:
 
     def __extract_chunk_data(self, chunk):
         print(f'Processing chunk {chunk}...')
-        csv_chunk_filepath = f'tmp/csv/chunk-{chunk}.csv'
+        csv_chunk_filepath = 'tmp/csv/{}'.format(chunk.replace('pdf', 'csv'))
         fd = open(csv_chunk_filepath, 'w')
 
         headers_csv = [
@@ -234,10 +235,10 @@ class PdfExtractor:
             'area'
         ]
         writer = csv.DictWriter(fd, fieldnames=headers_csv)
-        if chunk == 0:
+        if chunk.endswith('-1.pdf'):
             writer.writeheader()
 
-        pdf_chunk_filepath = f'tmp/pdf/chunk-{chunk}.pdf'
+        pdf_chunk_filepath = f'tmp/pdf/{chunk}'
         with pdfplumber.open(pdf_chunk_filepath) as pdf:
             for page in range(len(pdf.pages)):
                 table = pdf.pages[page].extract_table(
@@ -249,7 +250,7 @@ class PdfExtractor:
                 )
 
                 header = copy.deepcopy(self.header)
-                if chunk == 1:
+                if chunk.endswith('-1.pdf') and page == 0:
                     table = table[self.__find_header_index(table):]
 
                     if not header:
@@ -266,18 +267,20 @@ class PdfExtractor:
 
             gc.collect()
 
-        print(f'Saving result page {page}...')
+        print(f'Saving result chunk {csv_chunk_filepath}...')
         fd.close()
 
     def process(self):
         print('Processing file...')
+
+        chunks = fnmatch.filter(os.listdir('tmp/pdf'), '*.pdf')
 
         os.makedirs('tmp/csv', exist_ok=True)
 
         with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
             executor.map(
                 self.__extract_chunk_data,
-                range(os.cpu_count())
+                chunks
             )
 
 

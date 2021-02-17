@@ -3,7 +3,6 @@ FROM python:3.9
 RUN apt-get -yq update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y \
             build-essential \
-            poppler-utils \
             pdftk \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*

@@ -7,6 +7,7 @@ from datetime import datetime
 import fnmatch
 import gc
 import os
+import re
 import sys
 
 from decimal import Decimal
@@ -19,11 +20,12 @@ paths = os.listdir('data/raw')
 
 # Add absolute path to get information about tha last modification to max method
 _paths = list(map(lambda x: 'data/raw/{}'.format(x), paths))
-
 filename = max(_paths, key=os.path.getctime).replace(
     'data/raw/', '').replace('.pdf', '')
-
 input_path = "data/raw/{}.pdf".format(filename)
+
+regex_str = r'([\d]{1,2})/([\d]{1,2})/([\d]{2,4})'
+regex = re.compile(regex_str)
 
 
 pdf_header = [
@@ -216,6 +218,17 @@ class PdfExtractor:
         return True
 
     @staticmethod
+    def __try_fix_date(date_str):
+        match = regex.match(date_str)
+        if match:
+            day, month, year = match.groups()
+            if len(year) != 4:
+                year = '2021'
+            return f'{day}/{month}/{year}'
+
+        return date_str
+
+    @staticmethod
     def __validate_date(date_str):
         try:
             datetime.strptime(date_str, '%d/%m/%Y')
@@ -284,7 +297,7 @@ class PdfExtractor:
                         continue
                     self.__extra_attribs(dictio)
                     if not self.__validate_date(dictio['vaccine_date']):
-                        dictio['vaccine_date'] = '01/01/2021'
+                        dictio['vaccine_date'] = self.__try_fix_date(dictio['vaccine_date'])
                     writer.writerow(dictio)
 
                 pdf.pages[page].flush_cache()

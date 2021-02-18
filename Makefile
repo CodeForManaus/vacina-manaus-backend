@@ -4,6 +4,7 @@ SERVICE_NAME=vacina-manaus-backend
 
 LATEST_CSV=data/cleaned/${shell echo ${LATEST_PDF} | cut  -d "." -f1}.csv
 LATEST_PDF=$(shell ls -t1 data/raw/ |  head -n 1)
+NUM_CHUNKS=$(shell ls tmp/csv/*.csv | wc -l)
 
 .PHONY: all
 all: build data
@@ -41,7 +42,7 @@ split-pdf:
 .PHONY: concatenate-csv
 concatenate-csv:
 	$(info Concatenating all csv files into ${LATEST_CSV}...)
-	@cat tmp/csv/*.csv > ${LATEST_CSV}
+	@cat tmp/csv/page-{1..${NUM_CHUNKS}}.csv > ${LATEST_CSV}
 	@rm -rf tmp
 
 .PHONY: process-data

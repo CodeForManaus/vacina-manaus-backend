@@ -42,7 +42,7 @@ split-pdf:
 .PHONY: concatenate-csv
 concatenate-csv:
 	$(info Concatenating all csv files into ${LATEST_CSV}...)
-	@cat tmp/csv/page-{1..${NUM_CHUNKS}}.csv > ${LATEST_CSV}
+	@eval cat tmp/csv/page-{1..${NUM_CHUNKS}}.csv > ${LATEST_CSV}
 
 .PHONY: process-data
 process-data:

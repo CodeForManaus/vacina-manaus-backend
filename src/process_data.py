@@ -23,6 +23,7 @@ class DataProcessor:
 
     def __init__(self, input, output_path):
         self.df = pd.read_csv(input)
+        self.df.dropna(inplace=True)
         self.df.reset_index(inplace=True)
         self.df.rename(columns={'index': 'id'}, inplace=True)
         self.output_path = output_path

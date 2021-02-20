@@ -2,6 +2,7 @@
 
 SERVICE_NAME=vacina-manaus-backend
 
+SHELL=/usr/bin/env bash
 LATEST_CSV=data/cleaned/${shell echo ${LATEST_PDF} | cut  -d "." -f1}.csv
 LATEST_PDF=$(shell ls -t1 data/raw/ |  head -n 1)
 NUM_CHUNKS=$(shell ls tmp/csv/*.csv | wc -l)

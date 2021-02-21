@@ -13,7 +13,8 @@ import sys
 from decimal import Decimal
 
 import pdfplumber
-import psutil
+
+from column_finder import find_columns_positions
 from validate_docbr import CPF
 
 paths = os.listdir('data/raw')
@@ -56,53 +57,9 @@ class PdfExtractor:
         self.output_path = output_path
         self.raw_header_first_word = 'Nome Completo'
 
-        self.__pdf = None
-
-        # FIXME: Use '__find_columns' function to find the columns
-        #  dynamically. Do not receive them statically, initialize
-        #  this variable with 'None' value.
-
-        self.__columns = [
-            Decimal('38.904'),
-            Decimal('210.530'),
-            Decimal('273.050'),
-            Decimal('315.890'),
-            Decimal('455.110'),
-            Decimal('520.900'),
-            Decimal('586.300'),
-            Decimal('662.020'),
-            Decimal('763.599')
-        ]
-
-    @property
-    def pdf(self):
-
-        # FIXME: Remove this condition after making sure that the memory
-        #  leak problem is completely resolved.
-
-        if self.__pdf and (psutil.virtual_memory().percent > 90):
-            print('Exhausted {} bytes, reopening file...'.format(psutil.virtual_memory().used))
-
-            del self.__pdf
-            self.__pdf = None
-
-            print('Forcing garbage collector to release memory...')
-
-            gc.collect()
-
-        if not self.__pdf:
-            print('Opening file...')
-
-            self.__pdf = pdfplumber.open(self.input_path)
-
-        return self.__pdf
-
-    @property
-    def columns(self):
-        if not self.__columns:
-            self.__columns = self.__find_columns()
-
-        return self.__columns
+        self.__columns = find_columns_positions('tmp/pdf/page-1.pdf')
+        # FIXME: Find the end column
+        self.__columns.append(Decimal('763.599'))
 
     def __find_header_index(self, table):
         for i in range(len(table)):
@@ -118,62 +75,6 @@ class PdfExtractor:
         if len(cpf) < 11:
             cpf = cpf.zfill(11)
         return '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
-
-    def __find_columns(self):
-
-        # FIXME: Memory leak issue still occur in this function (at 2021-02-14),
-        #  while it is not resolved, the function is not being used
-
-        candidate_cols = {}
-        num_cols_to_find = len(pdf_header) + 1
-        allowed_minimum_distance_between_cols = 25  # pixels
-
-        pages = len(self.pdf.pages)
-
-        print('Analyzing file to find columns...')
-
-        for page in range(pages):
-            table = self.pdf.pages[page].find_tables(
-                {
-                    "vertical_strategy": "text",
-                    "horizontal_strategy": "lines",
-                    "keep_blank_chars": True,
-                    "text_tolerance": 1,
-                }
-            )[0]
-
-            # Gets all left/right cell delimiters as a sorted tuple of unique delimiters
-            cols = tuple(
-                sorted(set([cell[0] for cell in table.cells])) +
-                sorted(
-                    set([cell[2] for cell in table.cells]) - set([cell[0] for cell in table.cells])
-                )
-            )
-
-            if len(cols) != num_cols_to_find:
-                continue
-
-            minimum_distance_between_cols = min([cols[i] - cols[i-1] for i in range(1, len(cols))])
-
-            if minimum_distance_between_cols < allowed_minimum_distance_between_cols:
-                continue
-
-            if cols in candidate_cols.keys():
-                candidate_cols[cols] += 1
-            else:
-                candidate_cols[cols] = 1
-
-            self.pdf.pages[page].flush_cache()
-
-        # Sort candidate columns by number of appearances
-        candidate_cols = dict(sorted(candidate_cols.items(), key=lambda value: value[1], reverse=True))
-
-        elected = list(next(iter(candidate_cols)))
-
-        print('Elected: {}'.format(elected))
-
-        # Returns the one that appeared most times
-        return elected
 
     @staticmethod
     def __get_area_by_vaccination_site(vaccination_site):
@@ -278,7 +179,7 @@ class PdfExtractor:
                     table_settings={
                         "vertical_strategy": "explicit",
                         "horizontal_strategy": "lines",
-                        "explicit_vertical_lines": self.columns,
+                        "explicit_vertical_lines": self.__columns,
                     }
                 )
 

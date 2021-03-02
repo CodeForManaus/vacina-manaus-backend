@@ -57,7 +57,11 @@ class PdfExtractor:
         self.output_path = output_path
         self.raw_header_first_word = 'Nome Completo'
 
-        self.__columns = find_columns_positions('tmp/pdf/page-1.pdf')
+        chunk_list = fnmatch.filter(os.listdir('tmp/pdf'), '*.pdf')
+        regex = re.compile('page-[0]*1.pdf')
+        first_chunk = list(filter(regex.match, chunk_list))[0]
+
+        self.__columns = find_columns_positions(f'tmp/pdf/{first_chunk}')
         # FIXME: Find the end column
         self.__columns.append(Decimal('763.599'))
 

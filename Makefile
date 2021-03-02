@@ -38,7 +38,7 @@ split-pdf:
 	$(info Splitting the pdf ${LATEST_PDF} into pages...)
 	@mkdir -p tmp/pdf
 	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} \
-		pdftk data/raw/${LATEST_PDF} burst output tmp/pdf/page-%d.pdf
+		qpdf --split-pages data/raw/${LATEST_PDF} tmp/pdf/page-%d.pdf
 
 .PHONY: concatenate-csv
 concatenate-csv:

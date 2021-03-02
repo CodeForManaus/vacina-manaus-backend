@@ -28,6 +28,7 @@ input_path = "data/raw/{}.pdf".format(filename)
 regex_str = r'([\d]{1,2})/([\d]{1,2})/([\d]{2,4})'
 regex = re.compile(regex_str)
 
+first_chunk_regex = re.compile('page-[0]*1.pdf')
 
 pdf_header = [
     'full_name',
@@ -58,8 +59,7 @@ class PdfExtractor:
         self.raw_header_first_word = 'Nome Completo'
 
         chunk_list = fnmatch.filter(os.listdir('tmp/pdf'), '*.pdf')
-        regex = re.compile('page-[0]*1.pdf')
-        first_chunk = list(filter(regex.match, chunk_list))[0]
+        first_chunk = list(filter(first_chunk_regex.match, chunk_list))[0]
 
         self.__columns = find_columns_positions(f'tmp/pdf/{first_chunk}')
         # FIXME: Find the end column
@@ -173,7 +173,7 @@ class PdfExtractor:
             'area'
         ]
         writer = csv.DictWriter(fd, fieldnames=headers_csv)
-        if chunk.endswith('-1.pdf'):
+        if first_chunk_regex.match(chunk):
             writer.writeheader()
 
         pdf_chunk_filepath = f'tmp/pdf/{chunk}'
@@ -188,7 +188,7 @@ class PdfExtractor:
                 )
 
                 header = copy.deepcopy(pdf_header)
-                if chunk.endswith('-1.pdf') and page == 0:
+                if first_chunk_regex.match(chunk) and page == 0:
                     table = table[self.__find_header_index(table):]
 
                     if not header:

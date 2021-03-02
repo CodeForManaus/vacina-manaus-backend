@@ -37,7 +37,7 @@ run-extract-data:
 split-pdf:
 	$(info Splitting the pdf ${LATEST_PDF} into pages...)
 	@mkdir -p tmp/pdf
-	@docker-compose run --user=$(shell id -u) -e JAVA_OPTS="-Xmx2048m" --rm ${SERVICE_NAME} \
+	@docker-compose run --user=$(shell id -u) --rm ${SERVICE_NAME} \
 		pdftk data/raw/${LATEST_PDF} burst output tmp/pdf/page-%d.pdf
 
 .PHONY: concatenate-csv

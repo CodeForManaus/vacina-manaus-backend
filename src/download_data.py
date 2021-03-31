@@ -85,6 +85,6 @@ if __name__ == "__main__":
         url = sys.argv[1]
     else:
         url = 'https://semsa.manaus.am.gov.br/' \
-              'sala-de-situacao/novo-coronavirus/vacinas/'
+              'sala-de-situacao/novo-coronavirus/lista-de-vacinados-covid-19/'
     pdfDownloader = PdfDownloader(url)
     pdfDownloader.download()

@@ -1,74 +1,393 @@
 ﻿service_group,count
-Pessoas de 60 a 64 anos,55991
-Pessoas de 65 a 69 anos,42756
-Pessoas de 70 a 74 anos,28405
-Outros,25072
-Pessoas de 80 anos ou mais,19209
-Pessoas de 75 a 79 anos,16819
-Técnico de Enfermagem,10344
-Enfermeiro(a),4559
-Médico,3736
-Odontologista,3235
-Pessoal da Limpeza,2777
-Recepcionista,2390
-Farmacêutico,1894
-Fisioterapeutas,1812
-Psicólogo,1745
-Ensino Básico,1017
-Nutricionista,734
-Assistentes Sociais,696
-Médico Veterinário,613
-Auxiliar de Enfermagem,527
-Motorista de Ambulância,498
-Segurança,478
-Fonoaudiólogo,438
-Cozinheiro e Auxiliares,406
-Povos indígenas em terras indígenas,287
-Cuidador de Idosos,268
-Técnico de Odontologia,247
-Policial Militar,231
-Biomédico,215
-Ensino Superior,187
-Pessoas de 60 anos ou mais Institucionalizadas,168
-Funcionário do Sistema Funerário que tenham contato com cadáveres potencialmente contaminados,108
-Auxiliar de Veterinário,86
-Policial Civil,81
-Pessoas com Deficiência Institucionalizadas,59
-Biólogo,57
-Profissionais de Educação Física,56
-Técnico de Veterinário,37
-Terapeuta Ocupacional,30
-Diabetes Mellitus,18
-SSP-AM,13
-Hipertensão de difícil controle ou com complicações/lesão de órgão alvo,12
-Doula/Parteira,9
-Bombeiro Militar,7
-difícil controle ou com complicações/lesã,6
-População Privada de Liberdade,6
-Detran,4
-Exército Brasileiro - EB,4
-difícil controle ou com,3
-Pessoas com Deficiências Permanente Grave,3
-Hipertensão de difícil controle ou com complicações/lesãoH idpee rótregnãsoã oa ldveo,3
-Câncer,2
-Sistema Funerário que tenham,2
-Doenças Cardiovasculares e Cerebrovasculares,2
-Sistema Funerário que tenham contato com,2
-FFounnociaoundáiróiolo dgoo,2
-anos ou mais Institucionalizadas,1
-em terras iPnodvíoges ninadsígenas,1
-OHiupterortsensão de,1
-Pessoas de 80 aPnoovos so iun dmígaeisnas,1
-Pessoas de 80 aPneossso oaus  cmoamis,1
-Pessoas de 60 a 64 aPneosssoas de 60,1
-Pessoal da LHiimpepretzeansão de,1
-Obesidade Grave (Imc>=40),1
-FHiispioetreteranpsãeou tdaes,1
-FFiusnioctieornaápreiou dtaos,1
-EFunnfecrimoneáirroio( ad)o,1
-Doença Renal,1
-Deficiência Institucionalizadas,1
-Deficiência IPnesstsitouacsi ocnoamli zadas,1
-DHoipeenrçtean Rseãnoa dle,1
-DHiiapbeertteens sMãoe ldlietu s,1
-em terras indígenas,1
+ssoas de 60 a,57929
+ssoas de 65 a,43410
+abetes Mellitus,34708
+ssoas de 70 a,28731
+píceirl tceonnstãroo ldee o u,28019
+utros,25538
+ssoas de 80,19392
+ssoas de 75 a,17016
+sino Básico,14089
+cnico de,9353
+mbecs>i=d4a0d)e Grave,9061
+uutrnooss suprimido,6353
+fermeiro(a),4056
+licial Militar,3943
+édico,3908
+rednioçavsa sculares,3841
+beirinha,3326
+sfsicoiêans ccioams,3202
+dontologista,3162
+sasnooass de 60 a,2778
+ssoal da,2695
+utros {,2548
+cepcionista,2436
+ioterapeutas,1884
+enças,1828
+rmacêutico,1810
+sino Superior,1786
+icólogo,1780
+cnico de  {,1337
+sasnooass de 65 a,1063
+licial Civil,1022
+pertensão de,960
+ôenuicmaos pgartaivaess,945
+besidade Grave,847
+tricionista,774
+fermeiro(a) {,681
+lemnoçan ar,668
+sistentes,589
+sasnooass de 70 a,579
+édico {,525
+xiliar de,517
+gurança,490
+noaudiólogo,460
+ncer,413
+mbeiro Militar,412
+zinheiro e,407
+otorista de,407
+ença Renal,371
+arda Municipal,369
+sfsicoiêans ccioam,345
+cfenricmoa dgee m,328
+vos indígenas,325
+sasnooass de 75 a,302
+idador de,273
+nwdrnome de,268
+mmo rbidade,262
+omédico,235
+dontologista {,216
+P-AM,204
+ssoas com,179
+ença,176
+mutcr>o=s4 0),173
+ssoas de 60,170
+mm orbidade,168
+rmacêutico {,165
+prderiotevnassãcuol adree s,163
+licial Federal,158
+sasnooass de 80,134
+susnooasss udpe r6im0 iad o,134
+bíecsili dcoadnetr Golrea voeu,126
+arçsaile Airéar e- aF AB,115
+ncionário do,112
+sistentes  {,111
+ossso oaus  dmea 8is0,109
+ssoal da  {,106
+uilombola,106
+nôdnricoams eg rdaev es,104
+lemnoçan aRre nal,103
+rrose Hepática,96
+xiliar de  {,96
+otorista de  {,93
+oesu mouo pmaatiisas,83
+eaunmosopatias,81
+MarBinha do Brasil,64
+dícivilí dcuoonst role ou,59
+baenssipdlaadnet aGdroasv e,57
+ofissionais de,57
+ólogo,56
+licial,53
+susnooasss ucopmrim  ido,51
+sfsicoiêans cdiea s6 0 a,49
+lnccifeorrme,47
+mscs>o=a4s 0d)e 60 a,46
+lecimfoiarm  e,44
+tran,44
+bredsiiodvaadsec uGlarareves,43
+arinha do Brasil,40
+msspoeazla da,40
+abetes Mellitus {,38
+lemnoçansa r,37
+ioterapeutas {,36
+cfenricmoa dgee m {,34
+dainvsídpulaonst ados,33
+b aeniroinsha,32
+eumopatias,31
+icólogo {,31
+nwcner,28
+rapeuta,27
+cepcionista {,25
+m,24
+píceirl tceonnstãroo ldee o u {,20
+ewmnia,20
+rsdinioov Baássciucloares,19
+ônnciecras graves,18
+ipvaudlaaç ãdoe,18
+a abneotess Mellitus,17
+v otesr irnads ígenas,16
+aobse oteus m Maeisllitus,16
+ldicoivailá rio,15
+étdeircinoá rio,15
+awbentes Mellitus,13
+ndrome de,12
+mbeiro Militar {,12
+dconnictool odgei a,12
+sciisatiesntes,12
+ército,12
+tricionista {,11
+n acneors,11
+édico  {,11
+ambeotrebsid Madeellitus,10
+rsdsoioavsa dsecu 6la0r ae s,9
+oidsoasdor de,9
+ssoas de 60 a  {,9
+emia,9
+mutcr>o=s40),9
+rça Aérea,9
+ôlinciicaal sC givrialves,9
+ula/Parteira,9
+fxeilrimara dgee m,8
+paseirleteirnas ã- oF AdBe,8
+mcnpieczoa de,8
+mbecs>i=d4a0d)e Grave  {,8
+rrçdaio Avéarsecau lares,8
+pulação,7
+uutrnooss suprimido {,7
+wennças,7
+omédico {,7
+urtdroiosv asculares,7
+ôenmiciaas  graves,7
+susnooasss udpe r6im5 iad o,6
+divíduos,6
+onsc eoru mais,6
+eamnoias,6
+ôanbiectaess  gMraevlelitsus,6
+MbeBsidade Grave,6
+zinheiro e  {,6
+nodsr oomu em daeis,6
+uwtrnos,6
+ofseorms eiro(a),5
+nficceiêrncias,5
+eannçoass,5
+aasridleair Ma -u FnAicBipal,5
+aícriinl choan dtoro Bler aosuil,5
+fnecremragem,5
+swsonas de 60 a,5
+olics ioalu C mivailis,4
+ólogo {,4
+rednioçavsa sculares  {,4
+sino Básico {,4
+swsonas com,4
+ôsnsoicaass  cgormav es,4
+ssoal da  I,4
+swisntentes,4
+ssoas de 70 a  {,4
+ssoas de 65 a  {,4
+rrwonse Hepática,4
+oesm oiau  mais,4
+feemrmiaa gem,4
+mcpepezcaionista,4
+bfeeirrminahgaem,4
+boesi roinuh maais,4
+fwernmeiro(a),4
+arbdeiotveas sMcuellalirteuss,4
+afebremteasg Memellitus,4
+fxeilrimareeisro(a),4
+efiucmiênocpiaatsi as,4
+iwdandor de,4
+n danroomse de,4
+sfsicoiêans cdiea s6 5 a,3
+ufterromsagem,3
+omsb oeuir mo aMisilitar,3
+tterircinioánriisota,3
+f aenrmoseiro(a),3
+micpóelozgao,3
+susnooasls duap rimido,3
+laicniaols Civil,3
+opsu loauç ãmoa is,3
+fsesormasa dgeem 60 a,3
+feenrmçaasg em,3
+dconnictool odgei a {,3
+ossso oaus  dmea 6is0,3
+oufcisasçiãoon aFiíss idcae,3
+swsonas de 65 a,3
+ofissionais de  {,3
+zxiinliahreeirso e,3
+rsdsoioavsa dsecu 6la5r ae s,3
+ôlinciicaal sM girlaitvaers,3
+rôrnoiscea sH gerpaávteicsa,3
+ófleorgmoagem,3
+noaudiólogo {,3
+éícdiilc coontrole ou,3
+rfedriomveaisrcou(ala)res,3
+aivbaedtae sd Me ellitus,3
+alcbifeotrems Meellitus,3
+iuccóaloçgãoo Física,3
+sasnooass de 60 a  {,3
+msspoeazsa com,3
+manboesiro Militar,3
+oesnoçsas,3
+msspoeazla da  {,3
+rapeuta  {,3
+sino Superior {,2
+gurança {,2
+fsesormasa dgeem 75 a,2
+soiss toeun tmesa is,2
+ffeerrmmaegireom(a),2
+rwmnacêutico,2
+n tceerrras,2
+enças  {,2
+ssoas de 80  {,2
+ôsnsoicaass  dgera 8v0e s,2
+ôsnsoicaass  dgera 6v0e sa,2
+MédBico,2
+ôlinciicaal sF egrdaevreasl,2
+acbiaeitses Mellitus,2
+arçsaile Airéor e- aE B,2
+aésriclietior o - EB,2
+wennça,2
+beirinha {,2
+uítcriol cs ontrole ou,2
+uwtrnos {,2
+cwnnico de,2
+cxiialiiasr de,2
+sícsiol acso ndter o6l0e  ao u,2
+cziianihseiro e,2
+susnooasss udpe r7im5 iad o,2
+dnocnetrologia,2
+ixdilaiadroers de,2
+fsesormasa dgeem 65 a,2
+mmo rbidade {,2
+otteorirnisátrai ode,2
+mscs>o=a4s 0d)e 65 a,2
+mabc>e=te4s0 M) ellitus,2
+mscs>o=a4s 0c)om,2
+osisn oou B másaiciso,2
+riodtioevraapsceuultaarses,2
+oesn oçaus m  ais,2
+nmdroormbied addee,2
+otsroasn,2
+ocmiaéisdico,2
+p aenrtoesnsão de,2
+olics ioalu M milaitisar,2
+mtbriucliâonncisiata,2
+mdocn>t=o4l0o)gista,2
+nddorovimáreio d e,2
+uxinlioasrs duep rimido,1
+vwons indígenas,1
+b etierrinrahsa,1
+aubneotsessu Mpreimllitiduos,1
+mscs>o=a4s 0d)e 80,1
+oasboestes Mellitus,1
+mscs>o=a4s 0d)e 70 a,1
+uxtirloiasres,1
+uwilonmbola,1
+ofseorms eiro(a) {,1
+níccile crontrole ou,1
+bôensicidaasd ger aGvreasve,1
+cfeiarimseiro(a),1
+utros I,1
+cidiaaidsor de,1
+cmiabiseiro Civil,1
+cnicaeisr,1
+cons iocou  dmea is,1
+ufterromsagem {,1
+uempaicai onal,1
+twrann,1
+mobtourliâsntac idae  {,1
+mobtourliâsntac idae,1
+msspoeazsa de 60 a,1
+rpduiloavçaãsoc ulares,1
+zwinnheiro e,1
+nlmceornar,1
+aarsiinlehiraa d -o F BArBasil,1
+ôennicçaass  graves,1
+aanrisnphlaa ndtoa dBoras sil,1
+ôenuicmaos pgartaivaess  {,1
+ôgnuircaansç garaves,1
+Pw-AnM,1
+ômn icas graves,1
+nwonaudiólogo,1
+ômnibceaisr og rMavileitsar,1
+Pd-oAvMiário,1
+ôpneirctaesn sgãraov dees,1
+mwnbeiro Militar,1
+ôsnsoicaass  dgera 6v0e s,1
+nficceiêrncia,1
+ôcnniiccaos d ger aves,1
+abetes Mellitus (,1
+abetes Mellitus I,1
+abetes Mellitus J,1
+mutcr>o=s4 0) {,1
+ó alongoos,1
+mutbrouslância {,1
+éxdiliicaores,1
+éwdnico,1
+nrddrioomvaes cduel ares,1
+étdeimcoa,1
+érdrcioitvoa sculares,1
+adboevtieásr iMo ellitus,1
+élmrcoitnoa r,1
+afbiceiêtensc iMase llitus,1
+mtbriucliâonncisiata I,1
+cxiialiiasr de  {,1
+écdiaiciso {,1
+onsc eoru mais  {,1
+sícsiol acso ndter o7l5e  ao u,1
+s aisntoesntes,1
+mbeiro Civil,1
+sfsicoiêans cdiea s8 0,1
+sfsicoiêans cdiea s7 0 a,1
+píceirl tceonnstãroo ldee o u (,1
+fveorsm inadgeígmenas,1
+mbec>ir=in4h0a),1
+fwernmeiro(a) {,1
+manboesiro Militar {,1
+redmioiava sculares,1
+i caónloosgo,1
+idador de  {,1
+iocsó looug omais,1
+reduimovoapsacutilaasr es,1
+s aisntoesntes  {,1
+s ainnoo sBásico,1
+ncionário do  {,1
+iveandçaa sd e,1
+rzdiniohveairsoc uel ares,1
+mP-pAeMza,1
+rtaeprienuátraio,1
+rsdsoioavsa dsecu 8la0r es,1
+rsdsoioavsa dsecu 7la5r ae s,1
+rsdsoioavsa dsecu 7la0r ae s,1
+lscisiftoernmtees  {,1
+rsdsoioavsa dsecu 6la0r es,1
+rmdbioeviarosc Mulialirteasr,1
+rndcieorvasculares,1
+roros soeu H mepaiástica,1
+lfiicciiaêln Cciivaisl,1
+lmcifboerimroe Militar,1
+sino Básico J,1
+fsesormasa dgeem 60 a  {,1
+sícsiol acso ndter o7l0e  ao u,1
+mm orbidade {,1
+sícsiol acso ndter o6l5e  ao u,1
+rrmdiaocvêausctiucloares,1
+sícsiol acso ncotrmol e ou,1
+sícisilt ecnotnetsr ole ou,1
+swsonas de 80,1
+swsonas de 70 a,1
+opseortsensão de,1
+ormdiéodvaicsoculares,1
+daobnettoelso Mgiaellitus,1
+dboenirtionlhoagia,1
+susnooasss udpe r8im0 ido,1
+ossso oaus  cmoamis,1
+deomntioa logia,1
+ossso oaus  dmea 6is0 a,1
+micpóelozgao {,1
+pwenrtensão de,1
+doosn otoul omgaisista,1
+ssoas de 75 a  {,1
+drodniotovalosgciusltaares  {,1
+drroonsteo Hloegpiaática,1
+dvoonst oinlodgígiaenas,1
+dxoinliatorelosgista,1
+eannçoass  {,1
+owmnédico,1
+mecm>=ia4 0),1
+fermeiro(a) I,1
+sridsitoevnatsecsu lares,1
+pertensão de  {,1
+flmeromneairr o(a),1
+mbeiro Militar I,1
+ôzninichaesi rgor aev es,1

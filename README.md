@@ -1,3 +1,12 @@
+----
+
+#### PT/BR: Esse projeto não é mantido desde 2021, as informações da vacinação contra COVID-19 em Manaus devem ser feitas através do site oficial da Prefeitura de Manaus: https://vacinometro.manaus.am.gov.br/. O antigo domínio do projeto não foi renovado, não está mais em nossa posse, e não temos nenhuma responsabilidade pelo conteúdo lançado lá.
+
+
+#### EN: This project has no longer been maintained since 2021, information about COVID-19 vaccination in Manaus must be made through the official website of Manaus City Hall: https://vacinometro.manaus.am.gov.br/. The project's old domain has not been renewed, is no longer in our possession, and we have no responsibility for the content released there.
+
+----
+
 # vacina-manaus-backend 💉
 
 - [Sobre o projeto](#sobre-o-projeto)
